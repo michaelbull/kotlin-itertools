@@ -30,8 +30,6 @@ jobs:
           - os: windows-latest
             tasks: mingwX64Test
 
-    runs-on: ${{ matrix.os }}
-
     steps:
       - name: Checkout Project
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -95,6 +93,7 @@ jobs:
               publishTvosX64PublicationToMavenRepository
               publishWatchosArm32PublicationToMavenRepository
               publishWatchosArm64PublicationToMavenRepository
+              publishWatchosDeviceArm64PublicationToMavenRepository
               publishWatchosSimulatorArm64PublicationToMavenRepository
               publishWatchosX64PublicationToMavenRepository
 

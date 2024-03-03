@@ -16,7 +16,3 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "kotlin-itertools"
-
-include(
-    "kotlin-itertools",
-)
