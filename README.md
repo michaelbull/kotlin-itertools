@@ -35,9 +35,13 @@ dependencies {
 }
 ```
 
-## Sequences
+## Usage
 
 ### Combinations
+
+Returns a sequence that yields `length`-sized combinations from this list.
+
+The combination tuples are emitted in lexicographic order according to the order of this list.
 
 ```kotlin
 fun <T> List<T>.combinations(length: Int = size): Sequence<List<T>>
@@ -46,10 +50,6 @@ fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>>
 
 fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>>
 ```
-
-Returns a sequence that yields `length`-sized combinations from this list.
-
-The combination tuples are emitted in lexicographic order according to the order of this list.
 
 <details>
 <summary><strong>Examples</strong></summary>
@@ -80,9 +80,14 @@ fun example3(): List<Triple<Int, Int, Int>> {
         .toList()
 }
 ```
+
 </details>
 
 ### Permutations
+
+Returns a sequence that yields `length`-sized permutations from this list.
+
+The permutation tuples are emitted in lexicographic order according to the order of this list.
 
 ```kotlin
 fun <T> List<T>.permutations(length: Int = size): Sequence<List<T>>
@@ -91,10 +96,6 @@ fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>>
 
 fun <T> List<T>.triplePermutations(): Sequence<Triple<T, T, T>>
 ```
-
-Returns a sequence that yields `length`-sized permutations from this list.
-
-The permutation tuples are emitted in lexicographic order according to the order of this list.
 
 <details>
 <summary><strong>Examples</strong></summary>
@@ -125,9 +126,14 @@ fun example3(): List<Triple<Int, Int, Int>> {
         .toList()
 }
 ```
+
 </details>
 
 ### Cartesian Product
+
+Returns a sequence that yields the Cartesian product of the input iterables/lists.
+
+The product tuples are emitted in lexicographic order according to the order of this iterable/list.
 
 ```kotlin
 fun <A, B> Iterable<A>.product(other: Iterable<B>): Sequence<Pair<A, B>>
@@ -138,10 +144,6 @@ fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Sequence<
 
 fun <T> List<List<T>>.product(): Sequence<List<T>>
 ```
-
-Returns a sequence that yields the Cartesian product of the input iterables/lists.
-
-The product tuples are emitted in lexicographic order according to the order of this iterable/list.
 
 <details>
 <summary><strong>Examples</strong></summary>
