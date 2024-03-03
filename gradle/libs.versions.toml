@@ -1,0 +1,10 @@
+[versions]
+kotlin = "1.9.22"
+versions-plugin = "0.51.0"
+
+[libraries]
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }

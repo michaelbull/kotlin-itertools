@@ -1,0 +1,28 @@
+# Hidden files
+.*
+
+# Temporary files
+*~
+
+# Git
+!.git*
+
+# GitHub
+!/.github
+
+# EditorConfig
+!.editorconfig
+
+# IntelliJ Idea
+out/
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+build/
+local.properties
+
+# JVM error logs
+hs_err_pid*.log
+replay_pid*.log
