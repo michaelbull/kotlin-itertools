@@ -82,7 +82,7 @@ class ProductTest {
     }
 
     @Test
-    fun `product of 2 lists, one with 2 elements and one with 3, returns 6 products`() {
+    fun `product of 2 lists with 2 and 3 elements respectively returns 6 products`() {
         val expected = listOf(
             listOf('A', 'A'),
             listOf('A', 'B'),

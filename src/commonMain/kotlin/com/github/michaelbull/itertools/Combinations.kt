@@ -1,5 +1,7 @@
 package com.github.michaelbull.itertools
 
+private val EmptyCombination = sequenceOf(emptyList<Nothing>())
+
 /**
  * Returns a sequence that yields [length]-sized combinations from this list.
  *
@@ -15,15 +17,33 @@ package com.github.michaelbull.itertools
  *     .combinations(length = 3)
  *     .toList()
  *     // [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]]
+ *
+ * listOf(1, 2, 3)
+ *     .combinations(length = 0)
+ *     .toList()
+ *     // [[]]
+ *
+ * emptyList<Int>()
+ *     .combinations()
+ *     .toList()
+ *     // [[]]
  * ```
  *
  * @throws IllegalArgumentException if [length] is negative.
  */
 public fun <T> List<T>.combinations(length: Int = size): Sequence<List<T>> {
-    return combinations(
-        length = length,
-        combination = ::combination,
-    )
+    require(length >= 0) { "length must be non-negative, but was $length" }
+
+    return if (length == 0) {
+        EmptyCombination
+    } else if (size < length) {
+        emptySequence()
+    } else {
+        combinations(
+            length = length,
+            combination = ::combination,
+        )
+    }
 }
 
 /**
@@ -44,10 +64,14 @@ public fun <T> List<T>.combinations(length: Int = size): Sequence<List<T>> {
  * ```
  */
 public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
-    return combinations(
-        length = 2,
-        combination = ::pairCombination,
-    )
+    return if (size < 2) {
+        emptySequence()
+    } else {
+        combinations(
+            length = 2,
+            combination = ::pairCombination,
+        )
+    }
 }
 
 /**
@@ -68,10 +92,14 @@ public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
  * ```
  */
 public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
-    return combinations(
-        length = 3,
-        combination = ::tripleCombination,
-    )
+    return if (size < 3) {
+        emptySequence()
+    } else {
+        combinations(
+            length = 3,
+            combination = ::tripleCombination,
+        )
+    }
 }
 
 private fun <T> List<T>.combination(indices: IntArray, count: Int): List<T> {
@@ -108,41 +136,33 @@ private fun <T> List<T>.tripleCombination(indices: IntArray, count: Int): Triple
 private inline fun <T, V> List<T>.combinations(
     length: Int = size,
     crossinline combination: (indices: IntArray, count: Int) -> V,
-): Sequence<V> {
-    require(length >= 0) { "length must be non-negative, but was $length" }
+) = sequence {
+    val indices = IntArray(length) { it }
+    var searching = length < size
 
-    return if (isEmpty() || length !in 1..size) {
-        emptySequence()
-    } else {
-        sequence {
-            val indices = IntArray(length) { it }
-            var searching = length < size
+    yield(combination(indices, length))
 
-            yield(combination(indices, length))
+    while (searching) {
+        var found = false
+        var index = length - 1
 
-            while (searching) {
-                var found = false
-                var index = length - 1
+        while (index >= 0 && !found) {
+            if (indices[index] == index + size - length) {
+                index--
+            } else {
+                indices[index]++
 
-                while (index >= 0 && !found) {
-                    if (indices[index] == index + size - length) {
-                        index--
-                    } else {
-                        indices[index]++
-
-                        for (j in index + 1..<length) {
-                            indices[j] = indices[j - 1] + 1
-                        }
-
-                        yield(combination(indices, length))
-                        found = true
-                    }
+                for (j in index + 1..<length) {
+                    indices[j] = indices[j - 1] + 1
                 }
 
-                if (!found) {
-                    searching = false
-                }
+                yield(combination(indices, length))
+                found = true
             }
+        }
+
+        if (!found) {
+            searching = false
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.github.michaelbull.itertools
 
+private val EmptyPermutation = sequenceOf(emptyList<Nothing>())
+
 /**
  * Returns a sequence that yields [length]-sized permutations from this list.
  *
@@ -15,15 +17,33 @@ package com.github.michaelbull.itertools
  *     .permutations()
  *     .toList()
  *     // [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]]
+ *
+ * listOf(1, 2, 3)
+ *     .permutations(length = 0)
+ *     .toList()
+ *     // [[]]
+ *
+ * emptyList<Int>()
+ *     .permutations()
+ *     .toList()
+ *     // [[]]
  * ```
  *
  * @throws IllegalArgumentException if [length] is negative.
  */
 public fun <T> List<T>.permutations(length: Int = size): Sequence<List<T>> {
-    return permutations(
-        length = length,
-        permutation = ::permutation,
-    )
+    require(length >= 0) { "length must be non-negative, but was $length" }
+
+    return if (length == 0) {
+        EmptyPermutation
+    } else if (size < length) {
+        emptySequence()
+    } else {
+        permutations(
+            length = length,
+            permutation = ::permutation,
+        )
+    }
 }
 
 /**
@@ -44,10 +64,14 @@ public fun <T> List<T>.permutations(length: Int = size): Sequence<List<T>> {
  * ```
  */
 public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
-    return permutations(
-        length = 2,
-        permutation = ::pairPermutation
-    )
+    return if (size < 2) {
+        emptySequence()
+    } else {
+        permutations(
+            length = 2,
+            permutation = ::pairPermutation
+        )
+    }
 }
 
 /**
@@ -68,10 +92,14 @@ public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
  * ```
  */
 public fun <T> List<T>.triplePermutations(): Sequence<Triple<T, T, T>> {
-    return permutations(
-        length = 3,
-        permutation = ::triplePermutation,
-    )
+    return if (size < 3) {
+        emptySequence()
+    } else {
+        permutations(
+            length = 3,
+            permutation = ::triplePermutation,
+        )
+    }
 }
 
 private fun <T> List<T>.permutation(indices: IntArray, count: Int): List<T> {
@@ -108,42 +136,34 @@ private fun <T> List<T>.triplePermutation(indices: IntArray, count: Int): Triple
 private inline fun <T, V> List<T>.permutations(
     length: Int = size,
     crossinline permutation: (indices: IntArray, count: Int) -> V,
-): Sequence<V> {
-    require(length >= 0) { "length must be non-negative, but was $length" }
+) = sequence {
+    val indices = IntArray(size) { it }
+    val cycles = IntArray(length) { size - it }
+    var searching = size > 1
 
-    return if (isEmpty() || length !in 1..size) {
-        emptySequence()
-    } else {
-        sequence {
-            val indices = IntArray(size) { it }
-            val cycles = IntArray(length) { size - it }
-            var searching = size > 1
+    yield(permutation(indices, length))
 
-            yield(permutation(indices, length))
+    while (searching) {
+        var found = false
+        var index = length - 1
 
-            while (searching) {
-                var found = false
-                var index = length - 1
+        while (index >= 0 && !found) {
+            val exhausted = cycles[index] == 1
 
-                while (index >= 0 && !found) {
-                    val exhausted = cycles[index] == 1
+            if (exhausted) {
+                resetCycle(indices, index, cycles)
+                index--
+            } else {
+                cycles[index]--
+                indices.swapAt(index, size - cycles[index])
 
-                    if (exhausted) {
-                        resetCycle(indices, index, cycles)
-                        index--
-                    } else {
-                        cycles[index]--
-                        indices.swapAt(index, size - cycles[index])
-
-                        yield(permutation(indices, length))
-                        found = true
-                    }
-                }
-
-                if (!found) {
-                    searching = false
-                }
+                yield(permutation(indices, length))
+                found = true
             }
+        }
+
+        if (!found) {
+            searching = false
         }
     }
 }

@@ -22,9 +22,9 @@ class PermutationsTest {
     }
 
     @Test
-    fun `0 length permutations of 0 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = zeroElements.permutations(0)
+    fun `0 length permutations of 0 elements returns 1 permutation`() {
+        val expected = listOf(emptyList<Char>())
+        val actual = zeroElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
@@ -52,9 +52,9 @@ class PermutationsTest {
     }
 
     @Test
-    fun `0 length permutations of 1 element returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = oneElement.permutations(0)
+    fun `0 length permutations of 1 element returns 1 permutation`() {
+        val expected = listOf(emptyList<Char>())
+        val actual = oneElement.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
@@ -82,9 +82,9 @@ class PermutationsTest {
     }
 
     @Test
-    fun `0 length permutations of 2 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = twoElements.permutations(0)
+    fun `0 length permutations of 2 elements returns 1 permutation`() {
+        val expected = listOf(emptyList<Char>())
+        val actual = twoElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
@@ -127,9 +127,9 @@ class PermutationsTest {
     }
 
     @Test
-    fun `0 length permutations of 3 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = threeElements.permutations(0)
+    fun `0 length permutations of 3 elements returns 1 permutation`() {
+        val expected = listOf(emptyList<Char>())
+        val actual = threeElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
@@ -192,9 +192,9 @@ class PermutationsTest {
     }
 
     @Test
-    fun `0 length permutations of 4 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = fourElements.permutations(0)
+    fun `0 length permutations of 4 elements returns 1 permutation`() {
+        val expected = listOf(emptyList<Char>())
+        val actual = fourElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
