@@ -140,8 +140,6 @@ public fun <T> List<List<T>>.product(): Sequence<List<T>> {
 
 private fun <T> List<List<T>>.product(indices: IntArray): List<T> {
     return indices.mapIndexed { a, b ->
-        val listA = this[a]
-        val listB = listA[b]
-        listB
+        this[a][b]
     }
 }
