@@ -105,7 +105,7 @@ public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Se
  * ```
  */
 public fun <T> List<List<T>>.product(): Sequence<List<T>> {
-    return if (isEmpty()) {
+    return if (isEmpty() || any(List<T>::isEmpty)) {
         emptySequence()
     } else {
         sequence {
@@ -140,6 +140,8 @@ public fun <T> List<List<T>>.product(): Sequence<List<T>> {
 
 private fun <T> List<List<T>>.product(indices: IntArray): List<T> {
     return indices.mapIndexed { a, b ->
-        this[a][b]
+        val listA = this[a]
+        val listB = listA[b]
+        listB
     }
 }
