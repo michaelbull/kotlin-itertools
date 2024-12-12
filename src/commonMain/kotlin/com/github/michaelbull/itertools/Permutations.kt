@@ -126,22 +126,14 @@ private inline fun <T, V> List<T>.permutations(
                 var index = length - 1
 
                 while (index >= 0 && !found) {
-                    cycles[index]--
+                    val exhausted = cycles[index] == 1
 
-                    if (cycles[index] == 0) {
-                        val indexBefore = indices[index]
-
-                        for (i in index..<size - 1) {
-                            indices[i] = indices[i + 1]
-                        }
-
-                        indices[size - 1] = indexBefore
-                        cycles[index] = size - index
+                    if (exhausted) {
+                        resetCycle(indices, index, cycles)
                         index--
                     } else {
-                        val i = size - cycles[index]
-
-                        indices.swapByIndex(index, i)
+                        cycles[index]--
+                        indices.swapAt(index, size - cycles[index])
 
                         yield(permutation(indices, length))
                         found = true
@@ -156,7 +148,23 @@ private inline fun <T, V> List<T>.permutations(
     }
 }
 
-private fun IntArray.swapByIndex(a: Int, b: Int) {
+private fun <T> List<T>.resetCycle(indices: IntArray, index: Int, cycles: IntArray) {
+    val current = indices[index]
+    val remaining = size - index
+
+    cycles[index] = remaining
+
+    indices.shiftLeftFrom(index)
+    indices[lastIndex] = current
+}
+
+private fun IntArray.shiftLeftFrom(index: Int) {
+    for (index in index..<lastIndex) {
+        this[index] = this[index + 1]
+    }
+}
+
+private fun IntArray.swapAt(a: Int, b: Int) {
     this[a] = this[b].also {
         this[b] = this[a]
     }
