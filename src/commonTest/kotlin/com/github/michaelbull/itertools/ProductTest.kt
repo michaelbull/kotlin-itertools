@@ -5,95 +5,97 @@ import kotlin.test.assertEquals
 
 class ProductTest {
 
+    private val twoElements = "AB".toList()
+    private val threeElements = "ABC".toList()
+
     @Test
-    fun pairProduct() {
+    fun `product of empty list returns empty sequence`() {
+        val expected = emptySequence<List<Int>>()
+        val actual = emptyList<List<Int>>().product()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `product of 1 list with 3 elements returns 3 products`() {
         val expected = listOf(
-            Pair('A', 'E'),
-            Pair('A', 'F'),
-            Pair('A', 'G'),
-            Pair('B', 'E'),
-            Pair('B', 'F'),
-            Pair('B', 'G'),
-            Pair('C', 'E'),
-            Pair('C', 'F'),
-            Pair('C', 'G'),
-            Pair('D', 'E'),
-            Pair('D', 'F'),
-            Pair('D', 'G'),
+            listOf('A'),
+            listOf('B'),
+            listOf('C'),
         )
 
-        val actual = Pair("ABCD".toList(), "EFG".toList())
-            .product()
-            .toList()
+        val actual = listOf(
+            threeElements
+        ).product().toList()
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun tripleProduct() {
-        val expected = listOf(
-            Triple('A', 'E', 'H'),
-            Triple('A', 'E', 'I'),
-            Triple('A', 'F', 'H'),
-            Triple('A', 'F', 'I'),
-            Triple('A', 'G', 'H'),
-            Triple('A', 'G', 'I'),
-            Triple('B', 'E', 'H'),
-            Triple('B', 'E', 'I'),
-            Triple('B', 'F', 'H'),
-            Triple('B', 'F', 'I'),
-            Triple('B', 'G', 'H'),
-            Triple('B', 'G', 'I'),
-            Triple('C', 'E', 'H'),
-            Triple('C', 'E', 'I'),
-            Triple('C', 'F', 'H'),
-            Triple('C', 'F', 'I'),
-            Triple('C', 'G', 'H'),
-            Triple('C', 'G', 'I'),
-            Triple('D', 'E', 'H'),
-            Triple('D', 'E', 'I'),
-            Triple('D', 'F', 'H'),
-            Triple('D', 'F', 'I'),
-            Triple('D', 'G', 'H'),
-            Triple('D', 'G', 'I'),
-        )
+    fun `product of 2 lists with empty returns empty sequence`() {
+        val expected = emptyList<List<Char>>()
 
-        val actual = Triple("ABCD".toList(), "EFG".toList(), "HI".toList())
-            .product()
-            .toList()
+        val actual = listOf(
+            twoElements,
+            emptyList(),
+        ).product().toList()
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun product() {
-        val range = (0..1).toList()
-
+    fun `product of 2 lists each with 2 elements returns 4 products`() {
         val expected = listOf(
-            listOf(0, 0, 0),
-            listOf(0, 0, 1),
-            listOf(0, 1, 0),
-            listOf(0, 1, 1),
-            listOf(1, 0, 0),
-            listOf(1, 0, 1),
-            listOf(1, 1, 0),
-            listOf(1, 1, 1),
+            listOf('A', 'A'),
+            listOf('A', 'B'),
+            listOf('B', 'A'),
+            listOf('B', 'B'),
         )
 
-        val actual = listOf(range, range, range)
-            .product()
-            .toList()
+        val actual = listOf(
+            twoElements,
+            twoElements,
+        ).product().toList()
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun emptyProduct() {
-        val expected = emptyList<Pair<Nothing, Nothing>>()
+    fun `product of 3 lists each with 2 elements returns 8 products`() {
+        val expected = listOf(
+            listOf('A', 'A', 'A'),
+            listOf('A', 'A', 'B'),
+            listOf('A', 'B', 'A'),
+            listOf('A', 'B', 'B'),
+            listOf('B', 'A', 'A'),
+            listOf('B', 'A', 'B'),
+            listOf('B', 'B', 'A'),
+            listOf('B', 'B', 'B'),
+        )
 
-        val actual = Pair(emptyList<Nothing>(), emptyList<Nothing>())
-            .product()
-            .toList()
+        val actual = listOf(
+            twoElements,
+            twoElements,
+            twoElements,
+        ).product().toList()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `product of 2 lists, one with 2 elements and one with 3, returns 6 products`() {
+        val expected = listOf(
+            listOf('A', 'A'),
+            listOf('A', 'B'),
+            listOf('A', 'C'),
+            listOf('B', 'A'),
+            listOf('B', 'B'),
+            listOf('B', 'C'),
+        )
+
+        val actual = listOf(
+            twoElements,
+            threeElements,
+        ).product().toList()
 
         assertEquals(expected, actual)
     }

@@ -2,118 +2,306 @@ package com.github.michaelbull.itertools
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class PermutationsTest {
 
-    @Test
-    fun pairPermutations() {
-        val input = "ABCD".toList()
+    private val zeroElements = emptyList<Char>()
+    private val oneElement = "A".toList()
+    private val twoElements = "AB".toList()
+    private val threeElements = "ABC".toList()
+    private val fourElements = "ABCD".toList()
 
-        val expected = listOf(
-            Pair('A', 'B'),
-            Pair('A', 'C'),
-            Pair('A', 'D'),
-            Pair('B', 'A'),
-            Pair('B', 'C'),
-            Pair('B', 'D'),
-            Pair('C', 'A'),
-            Pair('C', 'B'),
-            Pair('C', 'D'),
-            Pair('D', 'A'),
-            Pair('D', 'B'),
-            Pair('D', 'C'),
+    @Test
+    fun `-1 length permutations of 0 elements throws`() {
+        val exception = assertFailsWith<IllegalArgumentException> {
+            zeroElements.permutations(-1)
+        }
+
+        assertEquals("length must be non-negative, but was -1", exception.message)
+    }
+
+    @Test
+    fun `0 length permutations of 0 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = zeroElements.permutations(0)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `1 length permutations of 0 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = zeroElements.permutations(1)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `2 length permutations of 0 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = zeroElements.permutations(2)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `-1 length permutations of 1 element throws`() {
+        val exception = assertFailsWith<IllegalArgumentException> {
+            oneElement.permutations(-1)
+        }
+
+        assertEquals("length must be non-negative, but was -1", exception.message)
+    }
+
+    @Test
+    fun `0 length permutations of 1 element returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = oneElement.permutations(0)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `1 length permutations of 1 element returns 1 permutation`() {
+        val expected = sequenceOf(listOf('A'))
+        val actual = oneElement.permutations(1)
+        assertEquals(expected.toList(), actual.toList())
+    }
+
+    @Test
+    fun `2 length permutations of 1 element returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = oneElement.permutations(2)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `-1 length permutations of 2 elements throws`() {
+        val exception = assertFailsWith<IllegalArgumentException> {
+            twoElements.permutations(-1)
+        }
+
+        assertEquals("length must be non-negative, but was -1", exception.message)
+    }
+
+    @Test
+    fun `0 length permutations of 2 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = twoElements.permutations(0)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `1 length permutations of 2 elements returns 2 permutations`() {
+        val expected = sequenceOf(
+            listOf('A'),
+            listOf('B'),
         )
 
-        val actual = input
-            .pairPermutations()
-            .toList()
-
-        assertEquals(expected, actual)
+        val actual = twoElements.permutations(1)
+        assertEquals(expected.toList(), actual.toList())
     }
 
     @Test
-    fun triplePermutations() {
-        val input = "ABCD".toList()
-
-        val expected = listOf(
-            Triple('A', 'B', 'C'),
-            Triple('A', 'B', 'D'),
-            Triple('A', 'C', 'B'),
-            Triple('A', 'C', 'D'),
-            Triple('A', 'D', 'B'),
-            Triple('A', 'D', 'C'),
-            Triple('B', 'A', 'C'),
-            Triple('B', 'A', 'D'),
-            Triple('B', 'C', 'A'),
-            Triple('B', 'C', 'D'),
-            Triple('B', 'D', 'A'),
-            Triple('B', 'D', 'C'),
-            Triple('C', 'A', 'B'),
-            Triple('C', 'A', 'D'),
-            Triple('C', 'B', 'A'),
-            Triple('C', 'B', 'D'),
-            Triple('C', 'D', 'A'),
-            Triple('C', 'D', 'B'),
-            Triple('D', 'A', 'B'),
-            Triple('D', 'A', 'C'),
-            Triple('D', 'B', 'A'),
-            Triple('D', 'B', 'C'),
-            Triple('D', 'C', 'A'),
-            Triple('D', 'C', 'B'),
+    fun `2 length permutations of 2 elements returns 2 permutations`() {
+        val expected = sequenceOf(
+            listOf('A', 'B'),
+            listOf('B', 'A'),
         )
 
-        val actual = input
-            .triplePermutations()
-            .toList()
+        val actual = twoElements.permutations(2)
+        assertEquals(expected.toList(), actual.toList())
+    }
 
+    @Test
+    fun `3 length permutations of 2 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = twoElements.permutations(3)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun permutations() {
-        val input = (0..2).toList()
+    fun `-1 length permutations of 3 elements throws`() {
+        val exception = assertFailsWith<IllegalArgumentException> {
+            threeElements.permutations(-1)
+        }
 
-        sequenceOf(5, 6)
+        assertEquals("length must be non-negative, but was -1", exception.message)
+    }
 
-        val expected = listOf(
-            listOf(0, 1, 2),
-            listOf(0, 2, 1),
-            listOf(1, 0, 2),
-            listOf(1, 2, 0),
-            listOf(2, 0, 1),
-            listOf(2, 1, 0),
+    @Test
+    fun `0 length permutations of 3 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = threeElements.permutations(0)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `1 length permutations of 3 elements returns 3 permutations`() {
+        val expected = sequenceOf(
+            listOf('A'),
+            listOf('B'),
+            listOf('C'),
         )
 
-        val actual = input
-            .permutations()
-            .toList()
+        val actual = threeElements.permutations(1)
+        assertEquals(expected.toList(), actual.toList())
+    }
 
+    @Test
+    fun `2 length permutations of 3 elements returns 6 permutations`() {
+        val expected = sequenceOf(
+            listOf('A', 'B'),
+            listOf('A', 'C'),
+            listOf('B', 'A'),
+            listOf('B', 'C'),
+            listOf('C', 'A'),
+            listOf('C', 'B'),
+        )
+
+        val actual = threeElements.permutations(2)
+        assertEquals(expected.toList(), actual.toList())
+    }
+
+    @Test
+    fun `3 length permutations of 3 elements returns 6 permutations`() {
+        val expected = sequenceOf(
+            listOf('A', 'B', 'C'),
+            listOf('A', 'C', 'B'),
+            listOf('B', 'A', 'C'),
+            listOf('B', 'C', 'A'),
+            listOf('C', 'A', 'B'),
+            listOf('C', 'B', 'A'),
+        )
+
+        val actual = threeElements.permutations(3)
+        assertEquals(expected.toList(), actual.toList())
+    }
+
+    @Test
+    fun `4 length permutations of 3 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = threeElements.permutations(4)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun emptyPermutations() {
-        val input = emptyList<Nothing>()
+    fun `-1 length permutations of 4 elements throws`() {
+        val exception = assertFailsWith<IllegalArgumentException> {
+            fourElements.permutations(-1)
+        }
 
-        val expected = emptyList<Nothing>()
+        assertEquals("length must be non-negative, but was -1", exception.message)
+    }
 
-        val actual = input
-            .permutations()
-            .toList()
-
+    @Test
+    fun `0 length permutations of 4 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = fourElements.permutations(0)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun excessPermutations() {
-        val input = "ABCD".toList()
+    fun `1 length permutations of 4 elements returns 4 permutations`() {
+        val expected = sequenceOf(
+            listOf('A'),
+            listOf('B'),
+            listOf('C'),
+            listOf('D'),
+        )
 
-        val expected = emptyList<List<Char>>()
+        val actual = fourElements.permutations(1)
+        assertEquals(expected.toList(), actual.toList())
+    }
 
-        val actual = input
-            .permutations(input.size + 2)
-            .toList()
+    @Test
+    fun `2 length permutations of 4 elements returns 12 permutations`() {
+        val expected = sequenceOf(
+            listOf('A', 'B'),
+            listOf('A', 'C'),
+            listOf('A', 'D'),
+            listOf('B', 'A'),
+            listOf('B', 'C'),
+            listOf('B', 'D'),
+            listOf('C', 'A'),
+            listOf('C', 'B'),
+            listOf('C', 'D'),
+            listOf('D', 'A'),
+            listOf('D', 'B'),
+            listOf('D', 'C'),
+        )
 
+        val actual = fourElements.permutations(2)
+        assertEquals(expected.toList(), actual.toList())
+    }
+
+    @Test
+    fun `3 length permutations of 4 elements returns 4 permutations`() {
+        val expected = sequenceOf(
+            listOf('A', 'B', 'C'),
+            listOf('A', 'B', 'D'),
+            listOf('A', 'C', 'B'),
+            listOf('A', 'C', 'D'),
+            listOf('A', 'D', 'B'),
+            listOf('A', 'D', 'C'),
+            listOf('B', 'A', 'C'),
+            listOf('B', 'A', 'D'),
+            listOf('B', 'C', 'A'),
+            listOf('B', 'C', 'D'),
+            listOf('B', 'D', 'A'),
+            listOf('B', 'D', 'C'),
+            listOf('C', 'A', 'B'),
+            listOf('C', 'A', 'D'),
+            listOf('C', 'B', 'A'),
+            listOf('C', 'B', 'D'),
+            listOf('C', 'D', 'A'),
+            listOf('C', 'D', 'B'),
+            listOf('D', 'A', 'B'),
+            listOf('D', 'A', 'C'),
+            listOf('D', 'B', 'A'),
+            listOf('D', 'B', 'C'),
+            listOf('D', 'C', 'A'),
+            listOf('D', 'C', 'B'),
+        )
+
+        val actual = fourElements.permutations(3)
+        assertEquals(expected.toList(), actual.toList())
+    }
+
+    @Test
+    fun `4 length permutations of 4 elements returns 24 permutations`() {
+        val expected = sequenceOf(
+            listOf('A', 'B', 'C', 'D'),
+            listOf('A', 'B', 'D', 'C'),
+            listOf('A', 'C', 'B', 'D'),
+            listOf('A', 'C', 'D', 'B'),
+            listOf('A', 'D', 'B', 'C'),
+            listOf('A', 'D', 'C', 'B'),
+            listOf('B', 'A', 'C', 'D'),
+            listOf('B', 'A', 'D', 'C'),
+            listOf('B', 'C', 'A', 'D'),
+            listOf('B', 'C', 'D', 'A'),
+            listOf('B', 'D', 'A', 'C'),
+            listOf('B', 'D', 'C', 'A'),
+            listOf('C', 'A', 'B', 'D'),
+            listOf('C', 'A', 'D', 'B'),
+            listOf('C', 'B', 'A', 'D'),
+            listOf('C', 'B', 'D', 'A'),
+            listOf('C', 'D', 'A', 'B'),
+            listOf('C', 'D', 'B', 'A'),
+            listOf('D', 'A', 'B', 'C'),
+            listOf('D', 'A', 'C', 'B'),
+            listOf('D', 'B', 'A', 'C'),
+            listOf('D', 'B', 'C', 'A'),
+            listOf('D', 'C', 'A', 'B'),
+            listOf('D', 'C', 'B', 'A'),
+        )
+
+        val actual = fourElements.permutations(4)
+        assertEquals(expected.toList(), actual.toList())
+    }
+
+    @Test
+    fun `5 length permutations of 4 elements returns empty sequence`() {
+        val expected = emptySequence<List<Char>>()
+        val actual = fourElements.permutations(5)
         assertEquals(expected, actual)
     }
 }
