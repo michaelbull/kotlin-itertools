@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.michael-bull.kotlin-itertools:kotlin-itertools:1.0.0")
+    implementation("com.michael-bull.kotlin-itertools:kotlin-itertools:1.0.1")
 }
 ```
 
