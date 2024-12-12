@@ -77,62 +77,71 @@ public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
 private fun <T> List<T>.combination(indices: IntArray, count: Int): List<T> {
     require(count > 0)
 
-    return indices.map(this::get)
+    return List(count) { index ->
+        get(indices[index])
+    }
 }
 
 private fun <T> List<T>.pairCombination(indices: IntArray, count: Int): Pair<T, T> {
     require(count == 2)
 
+    val (first, second) = indices
+
     return Pair(
-        first = get(indices[0]),
-        second = get(indices[1]),
+        first = get(first),
+        second = get(second),
     )
 }
 
 private fun <T> List<T>.tripleCombination(indices: IntArray, count: Int): Triple<T, T, T> {
     require(count == 3)
 
+    val (first, second, third) = indices
+
     return Triple(
-        first = get(indices[0]),
-        second = get(indices[1]),
-        third = get(indices[2]),
+        first = get(first),
+        second = get(second),
+        third = get(third),
     )
 }
 
 private inline fun <T, V> List<T>.combinations(
     length: Int = size,
     crossinline combination: (indices: IntArray, count: Int) -> V,
-): Sequence<V> = sequence {
-
+): Sequence<V> {
     require(length >= 0) { "length must be non-negative, but was $length" }
 
-    if (length in 1..size) {
-        val indices = IntArray(length) { it }
-        var searching = true
+    return if (isEmpty() || length !in 1..size) {
+        emptySequence()
+    } else {
+        sequence {
+            val indices = IntArray(length) { it }
+            var searching = length < size
 
-        yield(combination(indices, length))
+            yield(combination(indices, length))
 
-        while (searching) {
-            var found = false
-            var index = length - 1
+            while (searching) {
+                var found = false
+                var index = length - 1
 
-            while (index >= 0 && !found) {
-                if (indices[index] == index + size - length) {
-                    index--
-                } else {
-                    indices[index]++
+                while (index >= 0 && !found) {
+                    if (indices[index] == index + size - length) {
+                        index--
+                    } else {
+                        indices[index]++
 
-                    for (j in index + 1 until length) {
-                        indices[j] = indices[j - 1] + 1
+                        for (j in index + 1..<length) {
+                            indices[j] = indices[j - 1] + 1
+                        }
+
+                        yield(combination(indices, length))
+                        found = true
                     }
-
-                    yield(combination(indices, length))
-                    found = true
                 }
-            }
 
-            if (!found) {
-                searching = false
+                if (!found) {
+                    searching = false
+                }
             }
         }
     }

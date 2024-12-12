@@ -85,65 +85,72 @@ private fun <T> List<T>.permutation(indices: IntArray, count: Int): List<T> {
 private fun <T> List<T>.pairPermutation(indices: IntArray, count: Int): Pair<T, T> {
     require(count == 2)
 
+    val (first, second) = indices
+
     return Pair(
-        first = get(indices[0]),
-        second = get(indices[1]),
+        first = get(first),
+        second = get(second),
     )
 }
 
 private fun <T> List<T>.triplePermutation(indices: IntArray, count: Int): Triple<T, T, T> {
     require(count == 3)
 
+    val (first, second, third) = indices
+
     return Triple(
-        first = get(indices[0]),
-        second = get(indices[1]),
-        third = get(indices[2]),
+        first = get(first),
+        second = get(second),
+        third = get(third),
     )
 }
 
 private inline fun <T, V> List<T>.permutations(
     length: Int = size,
     crossinline permutation: (indices: IntArray, count: Int) -> V,
-): Sequence<V> = sequence {
-
+): Sequence<V> {
     require(length >= 0) { "length must be non-negative, but was $length" }
 
-    if (length in 1..size) {
-        val indices = IntArray(size) { it }
-        val cycles = IntArray(length) { size - it }
-        var searching = true
+    return if (isEmpty() || length !in 1..size) {
+        emptySequence()
+    } else {
+        sequence {
+            val indices = IntArray(size) { it }
+            val cycles = IntArray(length) { size - it }
+            var searching = size > 1
 
-        yield(permutation(indices, length))
+            yield(permutation(indices, length))
 
-        while (searching) {
-            var found = false
-            var index = length - 1
+            while (searching) {
+                var found = false
+                var index = length - 1
 
-            while (index >= 0 && !found) {
-                cycles[index]--
+                while (index >= 0 && !found) {
+                    cycles[index]--
 
-                if (cycles[index] == 0) {
-                    val indexBefore = indices[index]
+                    if (cycles[index] == 0) {
+                        val indexBefore = indices[index]
 
-                    for (i in index until size - 1) {
-                        indices[i] = indices[i + 1]
+                        for (i in index..<size - 1) {
+                            indices[i] = indices[i + 1]
+                        }
+
+                        indices[size - 1] = indexBefore
+                        cycles[index] = size - index
+                        index--
+                    } else {
+                        val i = size - cycles[index]
+
+                        indices.swapByIndex(index, i)
+
+                        yield(permutation(indices, length))
+                        found = true
                     }
-
-                    indices[size - 1] = indexBefore
-                    cycles[index] = size - index
-                    index--
-                } else {
-                    val i = size - cycles[index]
-
-                    indices.swapByIndex(index, i)
-
-                    yield(permutation(indices, length))
-                    found = true
                 }
-            }
 
-            if (!found) {
-                searching = false
+                if (!found) {
+                    searching = false
+                }
             }
         }
     }
