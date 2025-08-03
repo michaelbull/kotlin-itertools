@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.2.0"
-versions-plugin = "0.51.0"
+versions-plugin = "0.52.0"
 maven-publish-plugin = "0.34.0"
 
 [plugins]
