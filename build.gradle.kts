@@ -1,12 +1,14 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.versions)
-    `maven-publish`
-    signing
+    alias(libs.plugins.maven.publish)
 }
 
 tasks.withType<DependencyUpdatesTask> {
@@ -22,9 +24,15 @@ tasks.withType<DependencyUpdatesTask> {
 kotlin {
     explicitApi()
 
-    jvmToolchain(8)
+    compilerOptions {
+        optIn.add("kotlin.contracts.ExperimentalContracts")
+    }
 
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JVM_1_8)
+        }
+    }
 
     js(IR) {
         browser()
@@ -72,12 +80,6 @@ kotlin {
     watchosDeviceArm64()
 
     sourceSets {
-        all {
-            languageSettings.apply {
-                optIn("kotlin.contracts.ExperimentalContracts")
-            }
-        }
-
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
@@ -104,79 +106,52 @@ tasks.withType<Jar> {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            if (project.version.toString().endsWith("SNAPSHOT")) {
-                setUrl("https://oss.sonatype.org/content/repositories/snapshots")
-            } else {
-                setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-            }
 
-            credentials {
-                val ossrhUsername: String? by project
-                val ossrhPassword: String? by project
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
 
-                username = ossrhUsername
-                password = ossrhPassword
+    configure(
+        KotlinMultiplatform(
+            javadocJar = JavadocJar.Empty(),
+            sourcesJar = true,
+        )
+    )
+
+    pom {
+        name.set(project.name)
+        description.set(project.description)
+        url.set("https://github.com/michaelbull/kotlin-itertools")
+        inceptionYear.set("2024")
+
+        licenses {
+            license {
+                name.set("ISC License")
+                url.set("https://opensource.org/licenses/isc-license.txt")
             }
         }
-    }
 
-    publications.withType<MavenPublication> {
-        val targetName = this@withType.name
+        developers {
+            developer {
+                name.set("Michael Bull")
+                url.set("https://www.michael-bull.com")
+            }
+        }
 
-        artifact(tasks.register("${targetName}JavadocJar", Jar::class) {
-            group = LifecycleBasePlugin.BUILD_GROUP
-            description = "Assembles a jar archive containing the Javadoc API documentation of target '$targetName'."
-            archiveClassifier.set("javadoc")
-            archiveAppendix.set(targetName)
-        })
-
-        pom {
-            name.set(project.name)
-            description.set(project.description)
+        scm {
+            connection.set("scm:git:https://github.com/michaelbull/kotlin-itertools")
+            developerConnection.set("scm:git:git@github.com:michaelbull/kotlin-itertools.git")
             url.set("https://github.com/michaelbull/kotlin-itertools")
-            inceptionYear.set("2024")
+        }
 
-            licenses {
-                license {
-                    name.set("ISC License")
-                    url.set("https://opensource.org/licenses/isc-license.txt")
-                }
-            }
+        issueManagement {
+            system.set("GitHub Issues")
+            url.set("https://github.com/michaelbull/kotlin-itertools/issues")
+        }
 
-            developers {
-                developer {
-                    name.set("Michael Bull")
-                    url.set("https://www.michael-bull.com")
-                }
-            }
-
-            scm {
-                connection.set("scm:git:https://github.com/michaelbull/kotlin-itertools")
-                developerConnection.set("scm:git:git@github.com:michaelbull/kotlin-itertools.git")
-                url.set("https://github.com/michaelbull/kotlin-itertools")
-            }
-
-            issueManagement {
-                system.set("GitHub Issues")
-                url.set("https://github.com/michaelbull/kotlin-itertools/issues")
-            }
-
-            ciManagement {
-                system.set("GitHub Actions")
-                url.set("https://github.com/michaelbull/kotlin-itertools/actions")
-            }
+        ciManagement {
+            system.set("GitHub Actions")
+            url.set("https://github.com/michaelbull/kotlin-itertools/actions")
         }
     }
-}
-
-signing {
-    val signingKeyId: String? by project // must be the last 8 digits of the key
-    val signingKey: String? by project
-    val signingPassword: String? by project
-
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-    sign(publishing.publications)
 }
