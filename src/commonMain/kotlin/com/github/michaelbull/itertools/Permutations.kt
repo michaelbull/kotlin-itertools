@@ -34,8 +34,6 @@ public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
 public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
     return if (k == 0) {
         EmptyPermutation
-    } else if (size < k) {
-        emptySequence()
     } else {
         permutations(
             k = k,
@@ -62,14 +60,10 @@ public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
  * ```
  */
 public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
-    return if (size < 2) {
-        emptySequence()
-    } else {
-        permutations(
-            k = 2,
-            permutation = ::pairPermutation,
-        )
-    }
+    return permutations(
+        k = 2,
+        permutation = ::pairPermutation,
+    )
 }
 
 /**
@@ -90,14 +84,10 @@ public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
  * ```
  */
 public fun <T> List<T>.triplePermutations(): Sequence<Triple<T, T, T>> {
-    return if (size < 3) {
-        emptySequence()
-    } else {
-        permutations(
-            k = 3,
-            permutation = ::triplePermutation,
-        )
-    }
+    return permutations(
+        k = 3,
+        permutation = ::triplePermutation,
+    )
 }
 
 /**
@@ -162,53 +152,57 @@ public inline fun <T, V> List<T>.permutations(
 ): Sequence<V> {
     require(k >= 0) { "k must be non-negative, but was $k" }
 
-    return sequence {
-        val indices = IntArray(size) { it }
-        val cycles = IntArray(k) { size - it }
-        var searching = size > 1
+    return if (size < k) {
+        emptySequence()
+    } else {
+        sequence {
+            val indices = IntArray(size) { it }
+            val cycles = IntArray(k) { size - it }
+            var searching = size > 1
 
-        yield(permutation(indices, k))
+            yield(permutation(indices, k))
 
-        while (searching) {
-            var found = false
-            var index = k - 1
+            while (searching) {
+                var found = false
+                var index = k - 1
 
-            while (index >= 0 && !found) {
-                val exhausted = cycles[index] == 1
+                while (index >= 0 && !found) {
+                    val exhausted = cycles[index] == 1
 
-                if (exhausted) {
-                    resetCycle(indices, index, cycles)
-                    index--
-                } else {
-                    cycles[index]--
-                    indices.swapAt(index, size - cycles[index])
+                    if (exhausted) {
+                        resetCycle(indices, index, cycles)
+                        index--
+                    } else {
+                        cycles[index]--
+                        indices.swapAt(index, size - cycles[index])
 
-                    yield(permutation(indices, k))
-                    found = true
+                        yield(permutation(indices, k))
+                        found = true
+                    }
                 }
-            }
 
-            if (!found) {
-                searching = false
+                if (!found) {
+                    searching = false
+                }
             }
         }
     }
 }
 
 @PublishedApi
-internal fun <T> List<T>.resetCycle(indices: IntArray, index: Int, cycles: IntArray) {
-    val current = indices[index]
-    val remaining = size - index
+internal fun <T> List<T>.resetCycle(indices: IntArray, fromIndex: Int, cycles: IntArray) {
+    val current = indices[fromIndex]
+    val remaining = size - fromIndex
 
-    cycles[index] = remaining
+    cycles[fromIndex] = remaining
 
-    indices.shiftLeftFrom(index)
+    indices.shiftLeft(fromIndex)
     indices[lastIndex] = current
 }
 
 @PublishedApi
-internal fun IntArray.shiftLeftFrom(index: Int) {
-    for (index in index..<lastIndex) {
+internal fun IntArray.shiftLeft(fromIndex: Int) {
+    for (index in fromIndex..<lastIndex) {
         this[index] = this[index + 1]
     }
 }

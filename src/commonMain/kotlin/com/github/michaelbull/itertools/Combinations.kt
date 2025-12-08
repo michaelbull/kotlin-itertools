@@ -34,8 +34,6 @@ public val EmptyCombination: Sequence<List<Nothing>> = sequenceOf(emptyList())
 public fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>> {
     return if (k == 0) {
         EmptyCombination
-    } else if (size < k) {
-        emptySequence()
     } else {
         combinations(
             k = k,
@@ -62,14 +60,10 @@ public fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>> {
  * ```
  */
 public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
-    return if (size < 2) {
-        emptySequence()
-    } else {
-        combinations(
-            k = 2,
-            combination = ::pairCombination,
-        )
-    }
+    return combinations(
+        k = 2,
+        combination = ::pairCombination,
+    )
 }
 
 /**
@@ -90,14 +84,10 @@ public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
  * ```
  */
 public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
-    return if (size < 3) {
-        emptySequence()
-    } else {
-        combinations(
-            k = 3,
-            combination = ::tripleCombination,
-        )
-    }
+    return combinations(
+        k = 3,
+        combination = ::tripleCombination,
+    )
 }
 
 /**
@@ -162,33 +152,37 @@ public inline fun <T, V> List<T>.combinations(
 ): Sequence<V> {
     require(k >= 0) { "k must be non-negative, but was $k" }
 
-    return sequence {
-        val indices = IntArray(k) { it }
-        var searching = k < size
+    return if (size < k) {
+        emptySequence()
+    } else {
+        sequence {
+            val indices = IntArray(k) { it }
+            var searching = k < size
 
-        yield(combination(indices, k))
+            yield(combination(indices, k))
 
-        while (searching) {
-            var found = false
-            var index = k - 1
+            while (searching) {
+                var found = false
+                var index = k - 1
 
-            while (index >= 0 && !found) {
-                if (indices[index] == index + size - k) {
-                    index--
-                } else {
-                    indices[index]++
+                while (index >= 0 && !found) {
+                    if (indices[index] == index + size - k) {
+                        index--
+                    } else {
+                        indices[index]++
 
-                    for (j in index + 1..<k) {
-                        indices[j] = indices[j - 1] + 1
+                        for (j in (index + 1)..<k) {
+                            indices[j] = indices[j - 1] + 1
+                        }
+
+                        yield(combination(indices, k))
+                        found = true
                     }
-
-                    yield(combination(indices, k))
-                    found = true
                 }
-            }
 
-            if (!found) {
-                searching = false
+                if (!found) {
+                    searching = false
+                }
             }
         }
     }
