@@ -1,6 +1,6 @@
 package com.github.michaelbull.itertools
 
-private val EmptyPermutation = sequenceOf(emptyList<Nothing>())
+public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
 
 /**
  * Returns a sequence that yields [length]-sized permutations from this list.
@@ -32,8 +32,6 @@ private val EmptyPermutation = sequenceOf(emptyList<Nothing>())
  * @throws IllegalArgumentException if [length] is negative.
  */
 public fun <T> List<T>.permutations(length: Int = size): Sequence<List<T>> {
-    require(length >= 0) { "length must be non-negative, but was $length" }
-
     return if (length == 0) {
         EmptyPermutation
     } else if (size < length) {
@@ -102,16 +100,26 @@ public fun <T> List<T>.triplePermutations(): Sequence<Triple<T, T, T>> {
     }
 }
 
-private fun <T> List<T>.permutation(indices: IntArray, count: Int): List<T> {
-    require(count > 0)
+/**
+ * Returns a [length]-sized [List] permutation from this list at the given [indices].
+ *
+ * @throws IllegalArgumentException if [length] is not positive.
+ */
+public fun <T> List<T>.permutation(indices: IntArray, length: Int): List<T> {
+    require(length > 0) { "length must be positive, but was $length" }
 
-    return List(count) { index ->
+    return List(length) { index ->
         get(indices[index])
     }
 }
 
-private fun <T> List<T>.pairPermutation(indices: IntArray, count: Int): Pair<T, T> {
-    require(count == 2)
+/**
+ * Returns a [Pair] permutation from this list at the given [indices].
+ *
+ * @throws IllegalArgumentException if [length] is not `2`.
+ */
+public fun <T> List<T>.pairPermutation(indices: IntArray, length: Int): Pair<T, T> {
+    require(length == 2) { "length must be 2, but was $length" }
 
     val (first, second) = indices
 
@@ -121,8 +129,13 @@ private fun <T> List<T>.pairPermutation(indices: IntArray, count: Int): Pair<T, 
     )
 }
 
-private fun <T> List<T>.triplePermutation(indices: IntArray, count: Int): Triple<T, T, T> {
-    require(count == 3)
+/**
+ * Returns a [Triple] permutation from this list at the given [indices].
+ *
+ * @throws IllegalArgumentException if [length] is not `3`.
+ */
+public fun <T> List<T>.triplePermutation(indices: IntArray, length: Int): Triple<T, T, T> {
+    require(length == 3) { "length must be 3, but was $length" }
 
     val (first, second, third) = indices
 
@@ -133,42 +146,57 @@ private fun <T> List<T>.triplePermutation(indices: IntArray, count: Int): Triple
     )
 }
 
-private inline fun <T, V> List<T>.permutations(
+public typealias PermutationTransform<V> = (indices: IntArray, length: Int) -> V
+
+/**
+ * Returns a sequence that yields [length]-sized permutations from this list, using the provided [permutation]
+ * function to transform each permutation's [indices] into [V].
+ *
+ * The permutation tuples are emitted in lexicographic order according to the order of this list.
+ *
+ * @throws IllegalArgumentException if [length] is negative.
+ */
+public inline fun <T, V> List<T>.permutations(
     length: Int = size,
-    crossinline permutation: (indices: IntArray, count: Int) -> V,
-) = sequence {
-    val indices = IntArray(size) { it }
-    val cycles = IntArray(length) { size - it }
-    var searching = size > 1
+    crossinline permutation: PermutationTransform<V>,
+): Sequence<V> {
+    require(length >= 0) { "length must be non-negative, but was $length" }
 
-    yield(permutation(indices, length))
+    return sequence {
+        val indices = IntArray(size) { it }
+        val cycles = IntArray(length) { size - it }
+        var searching = size > 1
 
-    while (searching) {
-        var found = false
-        var index = length - 1
+        yield(permutation(indices, length))
 
-        while (index >= 0 && !found) {
-            val exhausted = cycles[index] == 1
+        while (searching) {
+            var found = false
+            var index = length - 1
 
-            if (exhausted) {
-                resetCycle(indices, index, cycles)
-                index--
-            } else {
-                cycles[index]--
-                indices.swapAt(index, size - cycles[index])
+            while (index >= 0 && !found) {
+                val exhausted = cycles[index] == 1
 
-                yield(permutation(indices, length))
-                found = true
+                if (exhausted) {
+                    resetCycle(indices, index, cycles)
+                    index--
+                } else {
+                    cycles[index]--
+                    indices.swapAt(index, size - cycles[index])
+
+                    yield(permutation(indices, length))
+                    found = true
+                }
             }
-        }
 
-        if (!found) {
-            searching = false
+            if (!found) {
+                searching = false
+            }
         }
     }
 }
 
-private fun <T> List<T>.resetCycle(indices: IntArray, index: Int, cycles: IntArray) {
+@PublishedApi
+internal fun <T> List<T>.resetCycle(indices: IntArray, index: Int, cycles: IntArray) {
     val current = indices[index]
     val remaining = size - index
 
@@ -178,13 +206,15 @@ private fun <T> List<T>.resetCycle(indices: IntArray, index: Int, cycles: IntArr
     indices[lastIndex] = current
 }
 
-private fun IntArray.shiftLeftFrom(index: Int) {
+@PublishedApi
+internal fun IntArray.shiftLeftFrom(index: Int) {
     for (index in index..<lastIndex) {
         this[index] = this[index + 1]
     }
 }
 
-private fun IntArray.swapAt(a: Int, b: Int) {
+@PublishedApi
+internal fun IntArray.swapAt(a: Int, b: Int) {
     this[a] = this[b].also {
         this[b] = this[a]
     }

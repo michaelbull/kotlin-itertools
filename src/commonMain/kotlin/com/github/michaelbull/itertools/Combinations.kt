@@ -1,9 +1,9 @@
 package com.github.michaelbull.itertools
 
-private val EmptyCombination = sequenceOf(emptyList<Nothing>())
+public val EmptyCombination: Sequence<List<Nothing>> = sequenceOf(emptyList())
 
 /**
- * Returns a sequence that yields [length]-sized combinations from this list.
+ * Returns a sequence that yields [length]-sized [List] combinations from this list.
  *
  * The combination tuples are emitted in lexicographic order according to the order of this list.
  *
@@ -32,8 +32,6 @@ private val EmptyCombination = sequenceOf(emptyList<Nothing>())
  * @throws IllegalArgumentException if [length] is negative.
  */
 public fun <T> List<T>.combinations(length: Int = size): Sequence<List<T>> {
-    require(length >= 0) { "length must be non-negative, but was $length" }
-
     return if (length == 0) {
         EmptyCombination
     } else if (size < length) {
@@ -102,16 +100,26 @@ public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
     }
 }
 
-private fun <T> List<T>.combination(indices: IntArray, count: Int): List<T> {
-    require(count > 0)
+/**
+ * Returns a [length]-sized [List] combination from this list at the given [indices].
+ *
+ * @throws IllegalArgumentException if [length] is not positive.
+ */
+public fun <T> List<T>.combination(indices: IntArray, length: Int): List<T> {
+    require(length > 0) { "length must be positive, but was $length" }
 
-    return List(count) { index ->
+    return List(length) { index ->
         get(indices[index])
     }
 }
 
-private fun <T> List<T>.pairCombination(indices: IntArray, count: Int): Pair<T, T> {
-    require(count == 2)
+/**
+ * Returns a [Pair] combination from this list at the given [indices].
+ *
+ * @throws IllegalArgumentException if [length] is not `2`.
+ */
+public fun <T> List<T>.pairCombination(indices: IntArray, length: Int): Pair<T, T> {
+    require(length == 2) { "length must be 2, but was $length" }
 
     val (first, second) = indices
 
@@ -121,8 +129,13 @@ private fun <T> List<T>.pairCombination(indices: IntArray, count: Int): Pair<T, 
     )
 }
 
-private fun <T> List<T>.tripleCombination(indices: IntArray, count: Int): Triple<T, T, T> {
-    require(count == 3)
+/**
+ * Returns a [Triple] combination from this list at the given [indices].
+ *
+ * @throws IllegalArgumentException if [length] is not `3`.
+ */
+public fun <T> List<T>.tripleCombination(indices: IntArray, length: Int): Triple<T, T, T> {
+    require(length == 3) { "length must be 3, but was $length" }
 
     val (first, second, third) = indices
 
@@ -133,36 +146,50 @@ private fun <T> List<T>.tripleCombination(indices: IntArray, count: Int): Triple
     )
 }
 
-private inline fun <T, V> List<T>.combinations(
+public typealias CombinationTransform<V> = (indices: IntArray, length: Int) -> V
+
+/**
+ * Returns a sequence that yields [length]-sized combinations from this list, using the provided [combination]
+ * function to transform each combination's [indices] into [V].
+ *
+ * The combination tuples are emitted in lexicographic order according to the order of this list.
+ *
+ * @throws IllegalArgumentException if [length] is negative.
+ */
+public inline fun <T, V> List<T>.combinations(
     length: Int = size,
-    crossinline combination: (indices: IntArray, count: Int) -> V,
-) = sequence {
-    val indices = IntArray(length) { it }
-    var searching = length < size
+    crossinline combination: CombinationTransform<V>,
+): Sequence<V> {
+    require(length >= 0) { "length must be non-negative, but was $length" }
 
-    yield(combination(indices, length))
+    return sequence {
+        val indices = IntArray(length) { it }
+        var searching = length < size
 
-    while (searching) {
-        var found = false
-        var index = length - 1
+        yield(combination(indices, length))
 
-        while (index >= 0 && !found) {
-            if (indices[index] == index + size - length) {
-                index--
-            } else {
-                indices[index]++
+        while (searching) {
+            var found = false
+            var index = length - 1
 
-                for (j in index + 1..<length) {
-                    indices[j] = indices[j - 1] + 1
+            while (index >= 0 && !found) {
+                if (indices[index] == index + size - length) {
+                    index--
+                } else {
+                    indices[index]++
+
+                    for (j in index + 1..<length) {
+                        indices[j] = indices[j - 1] + 1
+                    }
+
+                    yield(combination(indices, length))
+                    found = true
                 }
-
-                yield(combination(indices, length))
-                found = true
             }
-        }
 
-        if (!found) {
-            searching = false
+            if (!found) {
+                searching = false
+            }
         }
     }
 }
