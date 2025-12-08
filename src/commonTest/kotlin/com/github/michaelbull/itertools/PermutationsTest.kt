@@ -13,83 +13,83 @@ class PermutationsTest {
     private val fourElements = "ABCD".toList()
 
     @Test
-    fun `-1 length permutations of 0 elements throws`() {
+    fun `-1 k permutations of 0 elements throws`() {
         val exception = assertFailsWith<IllegalArgumentException> {
             zeroElements.permutations(-1)
         }
 
-        assertEquals("length must be non-negative, but was -1", exception.message)
+        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 length permutations of 0 elements returns 1 permutation`() {
+    fun `0 k permutations of 0 elements returns 1 permutation`() {
         val expected = listOf(emptyList<Char>())
         val actual = zeroElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `1 length permutations of 0 elements returns empty sequence`() {
+    fun `1 k permutations of 0 elements returns empty sequence`() {
         val expected = emptySequence<List<Char>>()
         val actual = zeroElements.permutations(1)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `2 length permutations of 0 elements returns empty sequence`() {
+    fun `2 k permutations of 0 elements returns empty sequence`() {
         val expected = emptySequence<List<Char>>()
         val actual = zeroElements.permutations(2)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `-1 length permutations of 1 element throws`() {
+    fun `-1 k permutations of 1 element throws`() {
         val exception = assertFailsWith<IllegalArgumentException> {
             oneElement.permutations(-1)
         }
 
-        assertEquals("length must be non-negative, but was -1", exception.message)
+        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 length permutations of 1 element returns 1 permutation`() {
+    fun `0 k permutations of 1 element returns 1 permutation`() {
         val expected = listOf(emptyList<Char>())
         val actual = oneElement.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `1 length permutations of 1 element returns 1 permutation`() {
+    fun `1 k permutations of 1 element returns 1 permutation`() {
         val expected = sequenceOf(listOf('A'))
         val actual = oneElement.permutations(1)
         assertEquals(expected.toList(), actual.toList())
     }
 
     @Test
-    fun `2 length permutations of 1 element returns empty sequence`() {
+    fun `2 k permutations of 1 element returns empty sequence`() {
         val expected = emptySequence<List<Char>>()
         val actual = oneElement.permutations(2)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `-1 length permutations of 2 elements throws`() {
+    fun `-1 k permutations of 2 elements throws`() {
         val exception = assertFailsWith<IllegalArgumentException> {
             twoElements.permutations(-1)
         }
 
-        assertEquals("length must be non-negative, but was -1", exception.message)
+        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 length permutations of 2 elements returns 1 permutation`() {
+    fun `0 k permutations of 2 elements returns 1 permutation`() {
         val expected = listOf(emptyList<Char>())
         val actual = twoElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `1 length permutations of 2 elements returns 2 permutations`() {
+    fun `1 k permutations of 2 elements returns 2 permutations`() {
         val expected = sequenceOf(
             listOf('A'),
             listOf('B'),
@@ -100,7 +100,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `2 length permutations of 2 elements returns 2 permutations`() {
+    fun `2 k permutations of 2 elements returns 2 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B'),
             listOf('B', 'A'),
@@ -111,30 +111,30 @@ class PermutationsTest {
     }
 
     @Test
-    fun `3 length permutations of 2 elements returns empty sequence`() {
+    fun `3 k permutations of 2 elements returns empty sequence`() {
         val expected = emptySequence<List<Char>>()
         val actual = twoElements.permutations(3)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `-1 length permutations of 3 elements throws`() {
+    fun `-1 k permutations of 3 elements throws`() {
         val exception = assertFailsWith<IllegalArgumentException> {
             threeElements.permutations(-1)
         }
 
-        assertEquals("length must be non-negative, but was -1", exception.message)
+        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 length permutations of 3 elements returns 1 permutation`() {
+    fun `0 k permutations of 3 elements returns 1 permutation`() {
         val expected = listOf(emptyList<Char>())
         val actual = threeElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `1 length permutations of 3 elements returns 3 permutations`() {
+    fun `1 k permutations of 3 elements returns 3 permutations`() {
         val expected = sequenceOf(
             listOf('A'),
             listOf('B'),
@@ -146,7 +146,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `2 length permutations of 3 elements returns 6 permutations`() {
+    fun `2 k permutations of 3 elements returns 6 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B'),
             listOf('A', 'C'),
@@ -161,7 +161,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `3 length permutations of 3 elements returns 6 permutations`() {
+    fun `3 k permutations of 3 elements returns 6 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B', 'C'),
             listOf('A', 'C', 'B'),
@@ -176,30 +176,30 @@ class PermutationsTest {
     }
 
     @Test
-    fun `4 length permutations of 3 elements returns empty sequence`() {
+    fun `4 k permutations of 3 elements returns empty sequence`() {
         val expected = emptySequence<List<Char>>()
         val actual = threeElements.permutations(4)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `-1 length permutations of 4 elements throws`() {
+    fun `-1 k permutations of 4 elements throws`() {
         val exception = assertFailsWith<IllegalArgumentException> {
             fourElements.permutations(-1)
         }
 
-        assertEquals("length must be non-negative, but was -1", exception.message)
+        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 length permutations of 4 elements returns 1 permutation`() {
+    fun `0 k permutations of 4 elements returns 1 permutation`() {
         val expected = listOf(emptyList<Char>())
         val actual = fourElements.permutations(0).toList()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `1 length permutations of 4 elements returns 4 permutations`() {
+    fun `1 k permutations of 4 elements returns 4 permutations`() {
         val expected = sequenceOf(
             listOf('A'),
             listOf('B'),
@@ -212,7 +212,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `2 length permutations of 4 elements returns 12 permutations`() {
+    fun `2 k permutations of 4 elements returns 12 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B'),
             listOf('A', 'C'),
@@ -233,7 +233,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `3 length permutations of 4 elements returns 4 permutations`() {
+    fun `3 k permutations of 4 elements returns 4 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B', 'C'),
             listOf('A', 'B', 'D'),
@@ -266,7 +266,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `4 length permutations of 4 elements returns 24 permutations`() {
+    fun `4 k permutations of 4 elements returns 24 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B', 'C', 'D'),
             listOf('A', 'B', 'D', 'C'),
@@ -299,7 +299,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `5 length permutations of 4 elements returns empty sequence`() {
+    fun `5 k permutations of 4 elements returns empty sequence`() {
         val expected = emptySequence<List<Char>>()
         val actual = fourElements.permutations(5)
         assertEquals(expected, actual)

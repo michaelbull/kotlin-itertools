@@ -3,13 +3,13 @@ package com.github.michaelbull.itertools
 public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
 
 /**
- * Returns a sequence that yields [length]-sized permutations from this list.
+ * Returns a sequence that yields [k]-sized permutations from this list.
  *
  * The permutation tuples are emitted in lexicographic order according to the order of this list.
  *
  * ```
  * "ABCD".toList()
- *     .permutations(length = 2)
+ *     .permutations(k = 2)
  *     .toList()
  *     // [[A, B], [A, C], [A, D], [B, A], [B, C], [B, D], [C, A], [C, B], [C, D], [D, A], [D, B], [D, C]]
  *
@@ -19,7 +19,7 @@ public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
  *     // [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]]
  *
  * listOf(1, 2, 3)
- *     .permutations(length = 0)
+ *     .permutations(k = 0)
  *     .toList()
  *     // [[]]
  *
@@ -29,16 +29,16 @@ public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
  *     // [[]]
  * ```
  *
- * @throws IllegalArgumentException if [length] is negative.
+ * @throws IllegalArgumentException if [k] is negative.
  */
-public fun <T> List<T>.permutations(length: Int = size): Sequence<List<T>> {
-    return if (length == 0) {
+public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
+    return if (k == 0) {
         EmptyPermutation
-    } else if (size < length) {
+    } else if (size < k) {
         emptySequence()
     } else {
         permutations(
-            length = length,
+            k = k,
             permutation = ::permutation,
         )
     }
@@ -66,8 +66,8 @@ public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
         emptySequence()
     } else {
         permutations(
-            length = 2,
-            permutation = ::pairPermutation
+            k = 2,
+            permutation = ::pairPermutation,
         )
     }
 }
@@ -94,21 +94,21 @@ public fun <T> List<T>.triplePermutations(): Sequence<Triple<T, T, T>> {
         emptySequence()
     } else {
         permutations(
-            length = 3,
+            k = 3,
             permutation = ::triplePermutation,
         )
     }
 }
 
 /**
- * Returns a [length]-sized [List] permutation from this list at the given [indices].
+ * Returns a [k]-sized [List] permutation from this list at the given [indices].
  *
- * @throws IllegalArgumentException if [length] is not positive.
+ * @throws IllegalArgumentException if [k] is not positive.
  */
-public fun <T> List<T>.permutation(indices: IntArray, length: Int): List<T> {
-    require(length > 0) { "length must be positive, but was $length" }
+public fun <T> List<T>.permutation(indices: IntArray, k: Int): List<T> {
+    require(k > 0) { "k must be positive, but was $k" }
 
-    return List(length) { index ->
+    return List(k) { index ->
         get(indices[index])
     }
 }
@@ -116,10 +116,10 @@ public fun <T> List<T>.permutation(indices: IntArray, length: Int): List<T> {
 /**
  * Returns a [Pair] permutation from this list at the given [indices].
  *
- * @throws IllegalArgumentException if [length] is not `2`.
+ * @throws IllegalArgumentException if [k] is not `2`.
  */
-public fun <T> List<T>.pairPermutation(indices: IntArray, length: Int): Pair<T, T> {
-    require(length == 2) { "length must be 2, but was $length" }
+public fun <T> List<T>.pairPermutation(indices: IntArray, k: Int): Pair<T, T> {
+    require(k == 2) { "k must be 2, but was $k" }
 
     val (first, second) = indices
 
@@ -132,10 +132,10 @@ public fun <T> List<T>.pairPermutation(indices: IntArray, length: Int): Pair<T, 
 /**
  * Returns a [Triple] permutation from this list at the given [indices].
  *
- * @throws IllegalArgumentException if [length] is not `3`.
+ * @throws IllegalArgumentException if [k] is not `3`.
  */
-public fun <T> List<T>.triplePermutation(indices: IntArray, length: Int): Triple<T, T, T> {
-    require(length == 3) { "length must be 3, but was $length" }
+public fun <T> List<T>.triplePermutation(indices: IntArray, k: Int): Triple<T, T, T> {
+    require(k == 3) { "k must be 3, but was $k" }
 
     val (first, second, third) = indices
 
@@ -146,32 +146,32 @@ public fun <T> List<T>.triplePermutation(indices: IntArray, length: Int): Triple
     )
 }
 
-public typealias PermutationTransform<V> = (indices: IntArray, length: Int) -> V
+public typealias PermutationTransform<V> = (indices: IntArray, k: Int) -> V
 
 /**
- * Returns a sequence that yields [length]-sized permutations from this list, using the provided [permutation]
+ * Returns a sequence that yields [k]-sized permutations from this list, using the provided [permutation]
  * function to transform each permutation's [indices] into [V].
  *
  * The permutation tuples are emitted in lexicographic order according to the order of this list.
  *
- * @throws IllegalArgumentException if [length] is negative.
+ * @throws IllegalArgumentException if [k] is negative.
  */
 public inline fun <T, V> List<T>.permutations(
-    length: Int = size,
+    k: Int = size,
     crossinline permutation: PermutationTransform<V>,
 ): Sequence<V> {
-    require(length >= 0) { "length must be non-negative, but was $length" }
+    require(k >= 0) { "k must be non-negative, but was $k" }
 
     return sequence {
         val indices = IntArray(size) { it }
-        val cycles = IntArray(length) { size - it }
+        val cycles = IntArray(k) { size - it }
         var searching = size > 1
 
-        yield(permutation(indices, length))
+        yield(permutation(indices, k))
 
         while (searching) {
             var found = false
-            var index = length - 1
+            var index = k - 1
 
             while (index >= 0 && !found) {
                 val exhausted = cycles[index] == 1
@@ -183,7 +183,7 @@ public inline fun <T, V> List<T>.permutations(
                     cycles[index]--
                     indices.swapAt(index, size - cycles[index])
 
-                    yield(permutation(indices, length))
+                    yield(permutation(indices, k))
                     found = true
                 }
             }
