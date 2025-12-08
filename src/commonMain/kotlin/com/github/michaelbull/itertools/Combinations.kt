@@ -157,33 +157,37 @@ public inline fun <T, V> List<T>.combinations(
     } else {
         sequence {
             val indices = IntArray(k) { it }
-            var searching = k < size
 
             yield(combination(indices, k))
 
-            while (searching) {
-                var found = false
-                var index = k - 1
-
-                while (index >= 0 && !found) {
-                    if (indices[index] == index + size - k) {
-                        index--
-                    } else {
-                        indices[index]++
-
-                        for (j in (index + 1)..<k) {
-                            indices[j] = indices[j - 1] + 1
-                        }
-
-                        yield(combination(indices, k))
-                        found = true
-                    }
-                }
-
-                if (!found) {
-                    searching = false
-                }
+            while (advance(indices, k - 1, k)) {
+                yield(combination(indices, k))
             }
         }
+    }
+}
+
+@PublishedApi
+internal tailrec fun <T> List<T>.advance(indices: IntArray, index: Int, k: Int): Boolean {
+    if (index < 0) return false
+
+    return if (exhausted(indices, index, k)) {
+        advance(indices, index - 1, k)
+    } else {
+        indices[index]++
+        indices.resetTail(index + 1, k)
+        true
+    }
+}
+
+@PublishedApi
+internal fun <T> List<T>.exhausted(indices: IntArray, index: Int, k: Int): Boolean {
+    return indices[index] == index + size - k
+}
+
+@PublishedApi
+internal fun IntArray.resetTail(fromIndex: Int, toIndex: Int) {
+    for (i in fromIndex..<toIndex) {
+        this[i] = this[i - 1] + 1
     }
 }

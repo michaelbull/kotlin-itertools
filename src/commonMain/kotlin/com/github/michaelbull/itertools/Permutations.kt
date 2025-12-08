@@ -158,35 +158,33 @@ public inline fun <T, V> List<T>.permutations(
         sequence {
             val indices = IntArray(size) { it }
             val cycles = IntArray(k) { size - it }
-            var searching = size > 1
 
             yield(permutation(indices, k))
 
-            while (searching) {
-                var found = false
-                var index = k - 1
-
-                while (index >= 0 && !found) {
-                    val exhausted = cycles[index] == 1
-
-                    if (exhausted) {
-                        resetCycle(indices, index, cycles)
-                        index--
-                    } else {
-                        cycles[index]--
-                        indices.swapAt(index, size - cycles[index])
-
-                        yield(permutation(indices, k))
-                        found = true
-                    }
-                }
-
-                if (!found) {
-                    searching = false
-                }
+            while (advance(indices, k - 1, cycles)) {
+                yield(permutation(indices, k))
             }
         }
     }
+}
+
+@PublishedApi
+internal tailrec fun <T> List<T>.advance(indices: IntArray, index: Int, cycles: IntArray): Boolean {
+    if (index < 0) return false
+
+    return if (exhausted(cycles, index)) {
+        resetCycle(indices, index, cycles)
+        advance(indices, index - 1, cycles)
+    } else {
+        cycles[index]--
+        indices.swapAt(index, size - cycles[index])
+        true
+    }
+}
+
+@PublishedApi
+internal fun exhausted(cycles: IntArray, index: Int): Boolean {
+    return cycles[index] == 1
 }
 
 @PublishedApi
