@@ -3,7 +3,6 @@ import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -28,11 +27,8 @@ kotlin {
         optIn.add("kotlin.contracts.ExperimentalContracts")
     }
 
-    jvm {
-        compilerOptions {
-            jvmTarget.set(JVM_1_8)
-        }
-    }
+    jvm()
+    jvmToolchain(8)
 
     js(IR) {
         browser()
