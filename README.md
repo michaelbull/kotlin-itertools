@@ -39,12 +39,12 @@ dependencies {
 
 ### Combinations
 
-Returns a sequence that yields `length`-sized combinations from this list.
+Returns a sequence that yields `k`-sized combinations from this list.
 
 The combination tuples are emitted in lexicographic order according to the order of this list.
 
 ```kotlin
-fun <T> List<T>.combinations(length: Int = size): Sequence<List<T>>
+fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>>
 
 fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>>
 
@@ -62,7 +62,7 @@ import com.github.michaelbull.itertools.tripleCombinations
 // [[A, B], [A, C], [A, D], [B, C], [B, D], [C, D]]
 fun example1(): List<List<Char>> {
     return "ABCD".toList()
-        .combinations(length = 2)
+        .combinations(k = 2)
         .toList()
 }
 
@@ -85,12 +85,12 @@ fun example3(): List<Triple<Int, Int, Int>> {
 
 ### Permutations
 
-Returns a sequence that yields `length`-sized permutations from this list.
+Returns a sequence that yields `k`-sized permutations from this list.
 
 The permutation tuples are emitted in lexicographic order according to the order of this list.
 
 ```kotlin
-fun <T> List<T>.permutations(length: Int = size): Sequence<List<T>>
+fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>>
 
 fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>>
 
@@ -108,7 +108,7 @@ import com.github.michaelbull.itertools.triplePermutations
 // [[A, B], [A, C], [A, D], [B, A], [B, C], [B, D], [C, A], [C, B], [C, D], [D, A], [D, B], [D, C]]
 fun example1(): List<List<Char>> {
     return "ABCD".toList()
-        .permutations(length = 2)
+        .permutations(k = 2)
         .toList()
 }
 
@@ -179,6 +179,7 @@ fun example3(): List<List<Char>> {
         .toList()
 }
 ```
+
 </details>
 
 ## Contributing
@@ -191,9 +192,12 @@ This project is available under the terms of the ISC license. See the
 [`LICENSE`](LICENSE) file for the copyright information and licensing terms.
 
 [python-itertools]: https://docs.python.org/3/library/itertools.html
+
 [advent-2023]: https://github.com/michaelbull/advent-2023
+
 [github]: https://github.com/michaelbull/kotlin-itertools
 
+[//]: # (@formatter:off)
 [badge-android]: http://img.shields.io/badge/-android-6EDB8D.svg?style=flat
 [badge-android-native]: http://img.shields.io/badge/support-[AndroidNative]-6EDB8D.svg?style=flat
 [badge-jvm]: http://img.shields.io/badge/-jvm-DB413D.svg?style=flat
@@ -208,3 +212,4 @@ This project is available under the terms of the ISC license. See the
 [badge-mac]: http://img.shields.io/badge/-macos-111111.svg?style=flat
 [badge-watchos]: http://img.shields.io/badge/-watchos-C0C0C0.svg?style=flat
 [badge-tvos]: http://img.shields.io/badge/-tvos-808080.svg?style=flat
+[//]: # (@formatter:on)
