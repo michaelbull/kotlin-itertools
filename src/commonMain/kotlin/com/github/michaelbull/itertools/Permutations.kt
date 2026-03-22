@@ -30,6 +30,10 @@ public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
  *     // [[]]
  * ```
  *
+ * - Python [itertools.permutations](https://docs.python.org/3/library/itertools.html#itertools.permutations)
+ * - Rust [Itertools::permutations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.permutations)
+ * - Ruby [Array#permutation](https://ruby-doc.org/3.3.0/Array.html#method-i-permutation)
+ *
  * @throws IllegalArgumentException if [k] is negative.
  */
 public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
@@ -60,6 +64,10 @@ public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
  *     .toList()
  *     // [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)]
  * ```
+ *
+ * - Python [itertools.permutations](https://docs.python.org/3/library/itertools.html#itertools.permutations)
+ * - Rust [Itertools::permutations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.permutations)
+ * - Ruby [Array#permutation](https://ruby-doc.org/3.3.0/Array.html#method-i-permutation)
  */
 public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
     return permutations(
@@ -85,6 +93,10 @@ public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
  *     .toList()
  *     // [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]
  * ```
+ *
+ * - Python [itertools.permutations](https://docs.python.org/3/library/itertools.html#itertools.permutations)
+ * - Rust [Itertools::permutations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.permutations)
+ * - Ruby [Array#permutation](https://ruby-doc.org/3.3.0/Array.html#method-i-permutation)
  */
 public fun <T> List<T>.triplePermutations(): Sequence<Triple<T, T, T>> {
     return permutations(
@@ -147,6 +159,10 @@ public typealias PermutationTransform<V> = (indices: IntArray, k: Int) -> V
  *
  * Elements are treated as unique based on their position, not their value. The permutation tuples are emitted in
  * lexicographic order according to the order of this list.
+ *
+ * - Python [itertools.permutations](https://docs.python.org/3/library/itertools.html#itertools.permutations)
+ * - Rust [Itertools::permutations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.permutations)
+ * - Ruby [Array#permutation](https://ruby-doc.org/3.3.0/Array.html#method-i-permutation)
  *
  * @throws IllegalArgumentException if [k] is negative.
  */

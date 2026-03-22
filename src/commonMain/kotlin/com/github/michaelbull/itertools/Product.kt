@@ -11,6 +11,10 @@ package com.github.michaelbull.itertools
  *     .toList()
  *     // [(A, x), (A, y), (B, x), (B, y), (C, x), (C, y), (D, x), (D, y)]
  * ```
+ *
+ * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
+ * - Rust [Itertools::cartesian_product](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.cartesian_product)
+ * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  */
 public infix fun <A, B> Iterable<A>.product(other: Iterable<B>): Sequence<Pair<A, B>> {
     return sequence {
@@ -33,6 +37,10 @@ public infix fun <A, B> Iterable<A>.product(other: Iterable<B>): Sequence<Pair<A
  *     .toList()
  *     // [(A, x), (A, y), (B, x), (B, y), (C, x), (C, y), (D, x), (D, y)]
  * ```
+ *
+ * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
+ * - Rust [Itertools::cartesian_product](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.cartesian_product)
+ * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  */
 public fun <A, B> Pair<Iterable<A>, Iterable<B>>.product(): Sequence<Pair<A, B>> {
     return first.product(second)
@@ -49,6 +57,10 @@ public fun <A, B> Pair<Iterable<A>, Iterable<B>>.product(): Sequence<Pair<A, B>>
  *     .toList()
  *     // [(A, C, E), (A, C, F), (A, D, E), (A, D, F), (B, C, E), (B, C, F), (B, D, E), (B, D, F)]
  * ```
+ *
+ * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
+ * - Rust [Itertools::cartesian_product](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.cartesian_product)
+ * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  */
 public fun <A, B, C> Iterable<A>.product(first: Iterable<B>, second: Iterable<C>): Sequence<Triple<A, B, C>> {
     return sequence {
@@ -73,6 +85,10 @@ public fun <A, B, C> Iterable<A>.product(first: Iterable<B>, second: Iterable<C>
  *     .toList()
  *     // [(A, C, E), (A, C, F), (A, D, E), (A, D, F), (B, C, E), (B, C, F), (B, D, E), (B, D, F)]
  * ```
+ *
+ * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
+ * - Rust [Itertools::cartesian_product](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.cartesian_product)
+ * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  */
 public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Sequence<Triple<A, B, C>> {
     return first.product(second, third)
@@ -89,6 +105,10 @@ public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Se
  *     .toList()
  *     // [[A, x], [A, y], [B, x], [B, y], [C, x], [C, y], [D, x], [D, y]]
  * ```
+ *
+ * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
+ * - Rust [Itertools::cartesian_product](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.cartesian_product)
+ * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  */
 public fun <T> List<List<T>>.product(): Sequence<List<T>> {
     return if (isEmpty() || any(List<T>::isEmpty)) {

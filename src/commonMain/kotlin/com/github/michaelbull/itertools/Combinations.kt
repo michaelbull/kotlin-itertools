@@ -27,6 +27,10 @@ public val EmptyCombination: Sequence<List<Nothing>> = sequenceOf(emptyList())
  *     // [[]]
  * ```
  *
+ * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
+ *
  * @throws IllegalArgumentException if [k] is negative.
  */
 public fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>> {
@@ -54,6 +58,10 @@ public fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>> {
  *     .toList()
  *     // [(A, B), (A, C), (B, C)]
  * ```
+ *
+ * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
  */
 public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
     return combinations(
@@ -76,6 +84,10 @@ public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
  *     .toList()
  *     // [(A, B, C)]
  * ```
+ *
+ * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
  */
 public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
     return combinations(
@@ -140,6 +152,10 @@ public typealias CombinationTransform<V> = (indices: IntArray, k: Int) -> V
  * the combination tuples are emitted in lexicographic order according to the order of this list.
  *
  * Unlike [combinationsWithReplacement], each element may appear at most once per combination.
+ *
+ * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
  *
  * @throws IllegalArgumentException if [k] is negative.
  */

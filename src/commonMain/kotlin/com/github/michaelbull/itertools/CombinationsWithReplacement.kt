@@ -27,6 +27,10 @@ package com.github.michaelbull.itertools
  *     // [[]]
  * ```
  *
+ * - Python [itertools.combinations_with_replacement](https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement)
+ * - Rust [Itertools::combinations_with_replacement](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations_with_replacement)
+ * - Ruby [Array#repeated_combination](https://ruby-doc.org/3.3.0/Array.html#method-i-repeated_combination)
+ *
  * @throws IllegalArgumentException if [k] is negative.
  */
 public fun <T> List<T>.combinationsWithReplacement(k: Int = size): Sequence<List<T>> {
@@ -54,6 +58,10 @@ public fun <T> List<T>.combinationsWithReplacement(k: Int = size): Sequence<List
  *     .toList()
  *     // [(A, A), (A, B), (A, C), (B, B), (B, C), (C, C)]
  * ```
+ *
+ * - Python [itertools.combinations_with_replacement](https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement)
+ * - Rust [Itertools::combinations_with_replacement](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations_with_replacement)
+ * - Ruby [Array#repeated_combination](https://ruby-doc.org/3.3.0/Array.html#method-i-repeated_combination)
  */
 public fun <T> List<T>.pairCombinationsWithReplacement(): Sequence<Pair<T, T>> {
     return combinationsWithReplacement(
@@ -76,6 +84,10 @@ public fun <T> List<T>.pairCombinationsWithReplacement(): Sequence<Pair<T, T>> {
  *     .toList()
  *     // [(A, A, A), (A, A, B), (A, A, C), (A, B, B), (A, B, C), (A, C, C), (B, B, B), (B, B, C), (B, C, C), (C, C, C)]
  * ```
+ *
+ * - Python [itertools.combinations_with_replacement](https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement)
+ * - Rust [Itertools::combinations_with_replacement](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations_with_replacement)
+ * - Ruby [Array#repeated_combination](https://ruby-doc.org/3.3.0/Array.html#method-i-repeated_combination)
  */
 public fun <T> List<T>.tripleCombinationsWithReplacement(): Sequence<Triple<T, T, T>> {
     return combinationsWithReplacement(
@@ -93,6 +105,10 @@ public fun <T> List<T>.tripleCombinationsWithReplacement(): Sequence<Triple<T, T
  *
  * Unlike [combinations], elements may appear more than once in each combination. Because elements can be reused, [k]
  * may exceed the size of this list and still produce results.
+ *
+ * - Python [itertools.combinations_with_replacement](https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement)
+ * - Rust [Itertools::combinations_with_replacement](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations_with_replacement)
+ * - Ruby [Array#repeated_combination](https://ruby-doc.org/3.3.0/Array.html#method-i-repeated_combination)
  *
  * @throws IllegalArgumentException if [k] is negative.
  */
