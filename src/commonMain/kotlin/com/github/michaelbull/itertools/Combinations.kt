@@ -3,20 +3,18 @@ package com.github.michaelbull.itertools
 public val EmptyCombination: Sequence<List<Nothing>> = sequenceOf(emptyList())
 
 /**
- * Returns a sequence that yields [k]-sized [List] combinations from this list.
+ * Returns a [Sequence] that yields [k]-sized [List] combinations of elements from this list.
  *
- * The combination tuples are emitted in lexicographic order according to the order of this list.
+ * Like [combinationsWithReplacement], elements are treated as unique based on their position, not their value, and
+ * the combination tuples are emitted in lexicographic order according to the order of this list.
+ *
+ * Unlike [combinationsWithReplacement], each element may appear at most once per combination.
  *
  * ```
- * "ABCD".toList()
+ * "ABC".toList()
  *     .combinations(k = 2)
  *     .toList()
- *     // [[A, B], [A, C], [A, D], [B, C], [B, D], [C, D]]
- *
- * (0..3).toList()
- *     .combinations(k = 3)
- *     .toList()
- *     // [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]]
+ *     // [[A, B], [A, C], [B, C]]
  *
  * listOf(1, 2, 3)
  *     .combinations(k = 0)
@@ -43,20 +41,18 @@ public fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>> {
 }
 
 /**
- * Returns a sequence that yields [Pair] combinations from this list.
+ * Returns a [Sequence] that yields [Pair] combinations from this list.
  *
- * The combination tuples are emitted in lexicographic order according to the order of this list.
+ * Like [pairCombinationsWithReplacement], elements are treated as unique based on their position, not their value,
+ * and the combination tuples are emitted in lexicographic order according to the order of this list.
+ *
+ * Unlike [pairCombinationsWithReplacement], each element may appear at most once per combination.
  *
  * ```
- * "ABDC".toList()
+ * "ABC".toList()
  *     .pairCombinations()
  *     .toList()
- *     // [(A, B), (A, D), (A, C), (B, D), (B, C), (D, C)]
- *
- * (0..3).toList()
- *     .pairCombinations()
- *     .toList()
- *     // [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+ *     // [(A, B), (A, C), (B, C)]
  * ```
  */
 public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
@@ -67,20 +63,18 @@ public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
 }
 
 /**
- * Returns a sequence that yields [Triple] combinations from this list.
+ * Returns a [Sequence] that yields [Triple] combinations from this list.
  *
- * The combination tuples are emitted in lexicographic order according to the order of this list.
+ * Like [tripleCombinationsWithReplacement], elements are treated as unique based on their position, not their value,
+ * and the combination tuples are emitted in lexicographic order according to the order of this list.
+ *
+ * Unlike [tripleCombinationsWithReplacement], each element may appear at most once per combination.
  *
  * ```
- * "ABDC".toList()
+ * "ABC".toList()
  *     .tripleCombinations()
  *     .toList()
- *     // [(A, B, C), (A, B, D), (A, C, D), (B, C, D)]
- *
- * (0..3).toList()
- *     .tripleCombinations()
- *     .toList()
- *     // [(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
+ *     // [(A, B, C)]
  * ```
  */
 public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
@@ -139,10 +133,13 @@ public fun <T> List<T>.tripleCombination(indices: IntArray, k: Int): Triple<T, T
 public typealias CombinationTransform<V> = (indices: IntArray, k: Int) -> V
 
 /**
- * Returns a sequence that yields [k]-sized combinations from this list, using the provided [combination]
- * function to transform each combination's [indices] into [V].
+ * Returns a [Sequence] that yields [k]-sized combinations of elements from this list, using the provided
+ * [combination] function to transform each combination's [indices] into [V].
  *
- * The combination tuples are emitted in lexicographic order according to the order of this list.
+ * Like [combinationsWithReplacement], elements are treated as unique based on their position, not their value, and
+ * the combination tuples are emitted in lexicographic order according to the order of this list.
+ *
+ * Unlike [combinationsWithReplacement], each element may appear at most once per combination.
  *
  * @throws IllegalArgumentException if [k] is negative.
  */

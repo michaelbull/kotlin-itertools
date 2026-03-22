@@ -3,9 +3,10 @@ package com.github.michaelbull.itertools
 public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
 
 /**
- * Returns a sequence that yields [k]-sized permutations from this list.
+ * Returns a [Sequence] that yields [k]-sized [List] permutations of elements from this list.
  *
- * The permutation tuples are emitted in lexicographic order according to the order of this list.
+ * Elements are treated as unique based on their position, not their value. The permutation tuples are emitted in
+ * lexicographic order according to the order of this list.
  *
  * ```
  * "ABCD".toList()
@@ -43,9 +44,10 @@ public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
 }
 
 /**
- * Returns a sequence that yields [Pair] permutations from this list.
+ * Returns a [Sequence] that yields [Pair] permutations from this list.
  *
- * The permutation tuples are emitted in lexicographic order according to the order of this list.
+ * Elements are treated as unique based on their position, not their value. The permutation tuples are emitted in
+ * lexicographic order according to the order of this list.
  *
  * ```
  * "ABCD".toList()
@@ -67,9 +69,10 @@ public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
 }
 
 /**
- * Returns a sequence that yields [Triple] permutations from this list.
+ * Returns a [Sequence] that yields [Triple] permutations from this list.
  *
- * The permutation tuples are emitted in lexicographic order according to the order of this list.
+ * Elements are treated as unique based on their position, not their value. The permutation tuples are emitted in
+ * lexicographic order according to the order of this list.
  *
  * ```
  * "ABCD".toList()
@@ -139,10 +142,11 @@ public fun <T> List<T>.triplePermutation(indices: IntArray, k: Int): Triple<T, T
 public typealias PermutationTransform<V> = (indices: IntArray, k: Int) -> V
 
 /**
- * Returns a sequence that yields [k]-sized permutations from this list, using the provided [permutation]
+ * Returns a [Sequence] that yields [k]-sized permutations of elements from this list, using the provided [permutation]
  * function to transform each permutation's [indices] into [V].
  *
- * The permutation tuples are emitted in lexicographic order according to the order of this list.
+ * Elements are treated as unique based on their position, not their value. The permutation tuples are emitted in
+ * lexicographic order according to the order of this list.
  *
  * @throws IllegalArgumentException if [k] is negative.
  */

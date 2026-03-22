@@ -39,7 +39,7 @@ dependencies {
 
 ### Combinations
 
-Returns a sequence that yields `k`-sized combinations from this list.
+Returns a sequence that yields `k`-sized combinations of elements from this list.
 
 The combination tuples are emitted in lexicographic order according to the order of this list.
 
@@ -59,24 +59,71 @@ import com.github.michaelbull.itertools.combinations
 import com.github.michaelbull.itertools.pairCombinations
 import com.github.michaelbull.itertools.tripleCombinations
 
-// [[A, B], [A, C], [A, D], [B, C], [B, D], [C, D]]
+// [[A, B], [A, C], [B, C]]
 fun example1(): List<List<Char>> {
-    return "ABCD".toList()
+    return "ABC".toList()
         .combinations(k = 2)
         .toList()
 }
 
-// [(A, B), (A, D), (A, C), (B, D), (B, C), (D, C)]
+// [(A, B), (A, C), (B, C)]
 fun example2(): List<Pair<Char, Char>> {
-    return "ABDC".toList()
+    return "ABC".toList()
         .pairCombinations()
         .toList()
 }
 
-// [(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
-fun example3(): List<Triple<Int, Int, Int>> {
-    return (0..3).toList()
+// [(A, B, C)]
+fun example3(): List<Triple<Char, Char, Char>> {
+    return "ABC".toList()
         .tripleCombinations()
+        .toList()
+}
+```
+
+</details>
+
+### Combinations with Replacement
+
+Returns a sequence that yields `k`-sized combinations of elements from this list, allowing individual elements to be
+repeated.
+
+The combination tuples are emitted in lexicographic order according to the order of this list.
+
+```kotlin
+fun <T> List<T>.combinationsWithReplacement(k: Int = size): Sequence<List<T>>
+
+fun <T> List<T>.pairCombinationsWithReplacement(): Sequence<Pair<T, T>>
+
+fun <T> List<T>.tripleCombinationsWithReplacement(): Sequence<Triple<T, T, T>>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.combinationsWithReplacement
+import com.github.michaelbull.itertools.pairCombinationsWithReplacement
+import com.github.michaelbull.itertools.tripleCombinationsWithReplacement
+
+// [[A, A], [A, B], [A, C], [B, B], [B, C], [C, C]]
+fun example1(): List<List<Char>> {
+    return "ABC".toList()
+        .combinationsWithReplacement(k = 2)
+        .toList()
+}
+
+// [(A, A), (A, B), (A, C), (B, B), (B, C), (C, C)]
+fun example2(): List<Pair<Char, Char>> {
+    return "ABC".toList()
+        .pairCombinationsWithReplacement()
+        .toList()
+}
+
+// [(A, A, A), (A, A, B), (A, A, C), (A, B, B), (A, B, C), (A, C, C), (B, B, B), (B, B, C), (B, C, C), (C, C, C)]
+fun example3(): List<Triple<Char, Char, Char>> {
+    return "ABC".toList()
+        .tripleCombinationsWithReplacement()
         .toList()
 }
 ```
@@ -85,7 +132,7 @@ fun example3(): List<Triple<Int, Int, Int>> {
 
 ### Permutations
 
-Returns a sequence that yields `k`-sized permutations from this list.
+Returns a sequence that yields `k`-sized permutations of elements from this list.
 
 The permutation tuples are emitted in lexicographic order according to the order of this list.
 

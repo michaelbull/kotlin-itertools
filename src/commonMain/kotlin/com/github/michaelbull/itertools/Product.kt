@@ -1,7 +1,7 @@
 package com.github.michaelbull.itertools
 
 /**
- * Returns a sequence that yields the Cartesian product of this iterable with the [other] as a [Pair].
+ * Returns a [Sequence] that yields the Cartesian product of this iterable with the [other] as a [Pair].
  *
  * The product tuples are emitted in lexicographic order according to the order of this iterable.
  *
@@ -23,7 +23,7 @@ public infix fun <A, B> Iterable<A>.product(other: Iterable<B>): Sequence<Pair<A
 }
 
 /**
- * Returns a sequence that yields the Cartesian product of the iterables in this [Pair].
+ * Returns a [Sequence] that yields the Cartesian product of the iterables in this [Pair].
  *
  * The product tuples are emitted in lexicographic order according to the order of this iterable.
  *
@@ -39,7 +39,7 @@ public fun <A, B> Pair<Iterable<A>, Iterable<B>>.product(): Sequence<Pair<A, B>>
 }
 
 /**
- * Returns a sequence that yields the Cartesian product of this iterable with the [first] and [second] as a [Triple].
+ * Returns a [Sequence] that yields the Cartesian product of this iterable with the [first] and [second] as a [Triple].
  *
  * The product tuples are emitted in lexicographic order according to the order of this iterable.
  *
@@ -63,7 +63,7 @@ public fun <A, B, C> Iterable<A>.product(first: Iterable<B>, second: Iterable<C>
 }
 
 /**
- * Returns a sequence that yields the Cartesian product of the iterables in this [Triple].
+ * Returns a [Sequence] that yields the Cartesian product of the iterables in this [Triple].
  *
  * The product tuples are emitted in lexicographic order according to the order of this iterable.
  *
@@ -79,7 +79,7 @@ public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Se
 }
 
 /**
- * Returns a sequence that yields the Cartesian product of the lists in this list.
+ * Returns a [Sequence] that yields the Cartesian product of the lists in this list.
  *
  * The product tuples are emitted in lexicographic order according to the order of this list.
  *
