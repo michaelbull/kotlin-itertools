@@ -233,7 +233,7 @@ class PermutationsTest {
     }
 
     @Test
-    fun `3 k permutations of 4 elements returns 4 permutations`() {
+    fun `3 k permutations of 4 elements returns 24 permutations`() {
         val expected = sequenceOf(
             listOf('A', 'B', 'C'),
             listOf('A', 'B', 'D'),
