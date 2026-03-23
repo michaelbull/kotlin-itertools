@@ -130,6 +130,33 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
+### Powerset
+
+Returns a sequence that yields all subsets of this list, from the empty set to the full set.
+
+Subsets are emitted in order of increasing size. Within each size, subsets are emitted in lexicographic order according
+to the order of this list.
+
+```kotlin
+fun <T> List<T>.powerset(): Sequence<List<T>>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.powerset
+
+// [[], [A], [B], [C], [A, B], [A, C], [B, C], [A, B, C]]
+fun example1(): List<List<Char>> {
+    return "ABC".toList()
+        .powerset()
+        .toList()
+}
+```
+
+</details>
+
 ### Permutations
 
 Returns a sequence that yields `k`-sized permutations of elements from this list.
