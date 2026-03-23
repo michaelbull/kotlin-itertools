@@ -157,6 +157,40 @@ fun example1(): List<List<Char>> {
 
 </details>
 
+### Derangements
+
+Returns a sequence that yields `k`-sized derangements of elements from this list. A derangement is a permutation where
+no element appears in its original position.
+
+The derangement tuples are emitted in lexicographic order according to the order of this list.
+
+```kotlin
+fun <T> List<T>.derangements(k: Int = size): Sequence<List<T>>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.derangements
+
+// [[B, C, A], [C, A, B]]
+fun example1(): List<List<Char>> {
+    return "ABC".toList()
+        .derangements()
+        .toList()
+}
+
+// [[B, A], [B, C], [B, D], [C, A], [C, D], [D, A], [D, C]]
+fun example2(): List<List<Char>> {
+    return "ABCD".toList()
+        .derangements(k = 2)
+        .toList()
+}
+```
+
+</details>
+
 ### Permutations
 
 Returns a sequence that yields `k`-sized permutations of elements from this list.
