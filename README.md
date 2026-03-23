@@ -290,6 +290,32 @@ fun example3(): List<List<Char>> {
 
 </details>
 
+### Cycle
+
+Returns an infinite sequence that yields elements from this iterable repeatedly, cycling back to the start after
+reaching the end.
+
+```kotlin
+fun <T> Iterable<T>.cycle(): Sequence<T>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.cycle
+
+// [A, B, C, A, B, C, A]
+fun example1(): List<Char> {
+    return "ABC".toList()
+        .cycle()
+        .take(7)
+        .toList()
+}
+```
+
+</details>
+
 ## Contributing
 
 Bug reports and pull requests are welcome on [GitHub][github].
