@@ -19,9 +19,13 @@ package com.github.michaelbull.itertools
  *     // []
  * ```
  *
+ * - Clojure [clojure.core/cycle](https://clojuredocs.org/clojure.core/cycle)
+ * - Elixir [Stream.cycle](https://hexdocs.pm/elixir/Stream.html#cycle/1)
+ * - Haskell [Prelude.cycle](https://hackage.haskell.org/package/base/docs/Prelude.html#v:cycle)
  * - Python [itertools.cycle](https://docs.python.org/3/library/itertools.html#itertools.cycle)
- * - Rust [Iterator::cycle](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.cycle)
  * - Ruby [Array#cycle](https://ruby-doc.org/3.3.0/Array.html#method-i-cycle)
+ * - Rust [Iterator::cycle](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.cycle)
+ * - Swift [cycled()](https://github.com/apple/swift-algorithms/blob/main/Guides/Cycle.md)
  */
 public fun <T> Iterable<T>.cycle(): Sequence<T> {
     val first = iterator()

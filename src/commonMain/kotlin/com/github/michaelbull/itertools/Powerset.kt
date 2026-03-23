@@ -18,6 +18,9 @@ package com.github.michaelbull.itertools
  *     // [[]]
  * ```
  *
+ * - Clojure [clojure.math.combinatorics/subsets](https://github.com/clojure/math.combinatorics#subsets)
+ * - Haskell [Data.List.subsequences](https://hackage.haskell.org/package/base/docs/Data-List.html#v:subsequences)
+ * - Julia [Combinatorics.subsets](https://juliamath.github.io/Combinatorics.jl/stable/#Combinatorics.subsets-Tuple{})
  * - Python [powerset (itertools recipe)](https://docs.python.org/3/library/itertools.html#itertools-recipes)
  * - Rust [Itertools::powerset](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.powerset)
  */

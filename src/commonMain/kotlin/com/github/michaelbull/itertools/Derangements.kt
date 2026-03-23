@@ -24,6 +24,7 @@ package com.github.michaelbull.itertools
  *     // [[]]
  * ```
  *
+ * - Haskell [Math.Combinat.Permutations.derangements](https://hackage.haskell.org/package/combinat/docs/Math-Combinat-Permutations.html#v:derangements)
  * - Python [derangements (itertools recipe)](https://docs.python.org/3/library/itertools.html#itertools-recipes)
  *
  * @throws IllegalArgumentException if [k] is negative.

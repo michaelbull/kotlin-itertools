@@ -27,9 +27,13 @@ public val EmptyCombination: Sequence<List<Nothing>> = sequenceOf(emptyList())
  *     // [[]]
  * ```
  *
+ * - Clojure [clojure.math.combinatorics/combinations](https://github.com/clojure/math.combinatorics#combinations)
+ * - Julia [Combinatorics.combinations](https://juliamath.github.io/Combinatorics.jl/stable/#Combinatorics.combinations)
  * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
- * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
  * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Scala [SeqOps.combinations](https://www.scala-lang.org/api/current/scala/collection/SeqOps.html#combinations(n:Int):Iterator[C])
+ * - Swift [combinations(ofCount:)](https://github.com/apple/swift-algorithms/blob/main/Guides/Combinations.md)
  *
  * @throws IllegalArgumentException if [k] is negative.
  */
@@ -59,9 +63,13 @@ public fun <T> List<T>.combinations(k: Int = size): Sequence<List<T>> {
  *     // [(A, B), (A, C), (B, C)]
  * ```
  *
+ * - Clojure [clojure.math.combinatorics/combinations](https://github.com/clojure/math.combinatorics#combinations)
+ * - Julia [Combinatorics.combinations](https://juliamath.github.io/Combinatorics.jl/stable/#Combinatorics.combinations)
  * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
- * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
  * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Scala [SeqOps.combinations](https://www.scala-lang.org/api/current/scala/collection/SeqOps.html#combinations(n:Int):Iterator[C])
+ * - Swift [combinations(ofCount:)](https://github.com/apple/swift-algorithms/blob/main/Guides/Combinations.md)
  */
 public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
     return combinations(
@@ -85,9 +93,13 @@ public fun <T> List<T>.pairCombinations(): Sequence<Pair<T, T>> {
  *     // [(A, B, C)]
  * ```
  *
+ * - Clojure [clojure.math.combinatorics/combinations](https://github.com/clojure/math.combinatorics#combinations)
+ * - Julia [Combinatorics.combinations](https://juliamath.github.io/Combinatorics.jl/stable/#Combinatorics.combinations)
  * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
- * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
  * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Scala [SeqOps.combinations](https://www.scala-lang.org/api/current/scala/collection/SeqOps.html#combinations(n:Int):Iterator[C])
+ * - Swift [combinations(ofCount:)](https://github.com/apple/swift-algorithms/blob/main/Guides/Combinations.md)
  */
 public fun <T> List<T>.tripleCombinations(): Sequence<Triple<T, T, T>> {
     return combinations(
@@ -153,9 +165,13 @@ public typealias CombinationTransform<V> = (indices: IntArray, k: Int) -> V
  *
  * Unlike [combinationsWithReplacement], each element may appear at most once per combination.
  *
+ * - Clojure [clojure.math.combinatorics/combinations](https://github.com/clojure/math.combinatorics#combinations)
+ * - Julia [Combinatorics.combinations](https://juliamath.github.io/Combinatorics.jl/stable/#Combinatorics.combinations)
  * - Python [itertools.combinations](https://docs.python.org/3/library/itertools.html#itertools.combinations)
- * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
  * - Ruby [Array#combination](https://ruby-doc.org/3.3.0/Array.html#method-i-combination)
+ * - Rust [Itertools::combinations](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.combinations)
+ * - Scala [SeqOps.combinations](https://www.scala-lang.org/api/current/scala/collection/SeqOps.html#combinations(n:Int):Iterator[C])
+ * - Swift [combinations(ofCount:)](https://github.com/apple/swift-algorithms/blob/main/Guides/Combinations.md)
  *
  * @throws IllegalArgumentException if [k] is negative.
  */
