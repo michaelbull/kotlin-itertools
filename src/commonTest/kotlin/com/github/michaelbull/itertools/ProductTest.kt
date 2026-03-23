@@ -9,9 +9,9 @@ class ProductTest {
     private val threeElements = "ABC".toList()
 
     @Test
-    fun `product of empty list returns empty sequence`() {
-        val expected = emptySequence<List<Int>>()
-        val actual = emptyList<List<Int>>().product()
+    fun `product of empty list returns 1 empty product`() {
+        val expected = listOf(emptyList<Int>())
+        val actual = emptyList<List<Int>>().product().toList()
         assertEquals(expected, actual)
     }
 

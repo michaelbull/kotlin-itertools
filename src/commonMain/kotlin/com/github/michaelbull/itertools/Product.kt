@@ -1,5 +1,7 @@
 package com.github.michaelbull.itertools
 
+public val EmptyProduct: Sequence<List<Nothing>> = sequenceOf(emptyList())
+
 /**
  * Returns a [Sequence] that yields the Cartesian product of this iterable with the [other] as a [Pair].
  *
@@ -100,10 +102,20 @@ public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Se
  * The product tuples are emitted in lexicographic order according to the order of this list.
  *
  * ```
- * listOf("ABCD".toList(), "xy".toList())
+ * listOf("AB".toList(), "CD".toList())
  *     .product()
  *     .toList()
- *     // [[A, x], [A, y], [B, x], [B, y], [C, x], [C, y], [D, x], [D, y]]
+ *     // [[A, C], [A, D], [B, C], [B, D]]
+ *
+ * listOf(listOf(1, 2), emptyList())
+ *     .product()
+ *     .toList()
+ *     // []
+ *
+ * emptyList<List<Int>>()
+ *     .product()
+ *     .toList()
+ *     // [[]]
  * ```
  *
  * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
@@ -111,7 +123,9 @@ public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Se
  * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  */
 public fun <T> List<List<T>>.product(): Sequence<List<T>> {
-    return if (isEmpty() || any(List<T>::isEmpty)) {
+    return if (isEmpty()) {
+        EmptyProduct
+    } else if (any(List<T>::isEmpty)) {
         emptySequence()
     } else {
         sequence {
