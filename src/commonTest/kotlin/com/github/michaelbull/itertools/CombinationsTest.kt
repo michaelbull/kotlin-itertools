@@ -30,15 +30,15 @@ class CombinationsTest {
 
     @Test
     fun `1 k combinations of 0 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = zeroElements.combinations(1)
+        val expected = emptyList<List<Char>>()
+        val actual = zeroElements.combinations(1).toList()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k combinations of 0 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = zeroElements.combinations(2)
+        val expected = emptyList<List<Char>>()
+        val actual = zeroElements.combinations(2).toList()
         assertEquals(expected, actual)
     }
 
@@ -60,15 +60,15 @@ class CombinationsTest {
 
     @Test
     fun `1 k combinations of 1 element returns 1 combination`() {
-        val expected = sequenceOf(listOf('A'))
-        val actual = oneElement.combinations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val expected = listOf(listOf('A'))
+        val actual = oneElement.combinations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k combinations of 1 element returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = oneElement.combinations(2)
+        val expected = emptyList<List<Char>>()
+        val actual = oneElement.combinations(2).toList()
         assertEquals(expected, actual)
     }
 
@@ -90,26 +90,26 @@ class CombinationsTest {
 
     @Test
     fun `1 k combinations of 2 elements returns 2 combinations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A'),
             listOf('B'),
         )
 
-        val actual = twoElements.combinations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = twoElements.combinations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k combinations of 2 elements returns 1 combination`() {
-        val expected = sequenceOf(listOf('A', 'B'))
-        val actual = twoElements.combinations(2)
-        assertEquals(expected.toList(), actual.toList())
+        val expected = listOf(listOf('A', 'B'))
+        val actual = twoElements.combinations(2).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `3 k combinations of 2 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = twoElements.combinations(3)
+        val expected = emptyList<List<Char>>()
+        val actual = twoElements.combinations(3).toList()
         assertEquals(expected, actual)
     }
 
@@ -131,39 +131,39 @@ class CombinationsTest {
 
     @Test
     fun `1 k combinations of 3 elements returns 3 combinations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A'),
             listOf('B'),
             listOf('C'),
         )
 
-        val actual = threeElements.combinations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = threeElements.combinations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k combinations of 3 elements returns 3 combinations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B'),
             listOf('A', 'C'),
             listOf('B', 'C'),
         )
 
-        val actual = threeElements.combinations(2)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = threeElements.combinations(2).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `3 k combinations of 3 elements returns 1 combination`() {
-        val expected = sequenceOf(listOf('A', 'B', 'C'))
-        val actual = threeElements.combinations(3)
-        assertEquals(expected.toList(), actual.toList())
+        val expected = listOf(listOf('A', 'B', 'C'))
+        val actual = threeElements.combinations(3).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `4 k combinations of 3 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = threeElements.combinations(4)
+        val expected = emptyList<List<Char>>()
+        val actual = threeElements.combinations(4).toList()
         assertEquals(expected, actual)
     }
 
@@ -185,20 +185,20 @@ class CombinationsTest {
 
     @Test
     fun `1 k combinations of 4 elements returns 4 combinations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A'),
             listOf('B'),
             listOf('C'),
             listOf('D'),
         )
 
-        val actual = fourElements.combinations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.combinations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k combinations of 4 elements returns 6 combinations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B'),
             listOf('A', 'C'),
             listOf('A', 'D'),
@@ -207,34 +207,34 @@ class CombinationsTest {
             listOf('C', 'D'),
         )
 
-        val actual = fourElements.combinations(2)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.combinations(2).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `3 k combinations of 4 elements returns 4 combinations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B', 'C'),
             listOf('A', 'B', 'D'),
             listOf('A', 'C', 'D'),
             listOf('B', 'C', 'D'),
         )
 
-        val actual = fourElements.combinations(3)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.combinations(3).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `4 k combinations of 4 elements returns 1 combinations`() {
-        val expected = sequenceOf(listOf('A', 'B', 'C', 'D'))
-        val actual = fourElements.combinations(4)
-        assertEquals(expected.toList(), actual.toList())
+        val expected = listOf(listOf('A', 'B', 'C', 'D'))
+        val actual = fourElements.combinations(4).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `5 k combinations of 4 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = fourElements.combinations(5)
+        val expected = emptyList<List<Char>>()
+        val actual = fourElements.combinations(5).toList()
         assertEquals(expected, actual)
     }
 }

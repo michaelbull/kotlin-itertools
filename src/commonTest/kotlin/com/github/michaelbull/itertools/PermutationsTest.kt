@@ -30,15 +30,15 @@ class PermutationsTest {
 
     @Test
     fun `1 k permutations of 0 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = zeroElements.permutations(1)
+        val expected = emptyList<List<Char>>()
+        val actual = zeroElements.permutations(1).toList()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k permutations of 0 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = zeroElements.permutations(2)
+        val expected = emptyList<List<Char>>()
+        val actual = zeroElements.permutations(2).toList()
         assertEquals(expected, actual)
     }
 
@@ -60,15 +60,15 @@ class PermutationsTest {
 
     @Test
     fun `1 k permutations of 1 element returns 1 permutation`() {
-        val expected = sequenceOf(listOf('A'))
-        val actual = oneElement.permutations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val expected = listOf(listOf('A'))
+        val actual = oneElement.permutations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k permutations of 1 element returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = oneElement.permutations(2)
+        val expected = emptyList<List<Char>>()
+        val actual = oneElement.permutations(2).toList()
         assertEquals(expected, actual)
     }
 
@@ -90,30 +90,30 @@ class PermutationsTest {
 
     @Test
     fun `1 k permutations of 2 elements returns 2 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A'),
             listOf('B'),
         )
 
-        val actual = twoElements.permutations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = twoElements.permutations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k permutations of 2 elements returns 2 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B'),
             listOf('B', 'A'),
         )
 
-        val actual = twoElements.permutations(2)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = twoElements.permutations(2).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `3 k permutations of 2 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = twoElements.permutations(3)
+        val expected = emptyList<List<Char>>()
+        val actual = twoElements.permutations(3).toList()
         assertEquals(expected, actual)
     }
 
@@ -135,19 +135,19 @@ class PermutationsTest {
 
     @Test
     fun `1 k permutations of 3 elements returns 3 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A'),
             listOf('B'),
             listOf('C'),
         )
 
-        val actual = threeElements.permutations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = threeElements.permutations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k permutations of 3 elements returns 6 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B'),
             listOf('A', 'C'),
             listOf('B', 'A'),
@@ -156,13 +156,13 @@ class PermutationsTest {
             listOf('C', 'B'),
         )
 
-        val actual = threeElements.permutations(2)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = threeElements.permutations(2).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `3 k permutations of 3 elements returns 6 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B', 'C'),
             listOf('A', 'C', 'B'),
             listOf('B', 'A', 'C'),
@@ -171,14 +171,14 @@ class PermutationsTest {
             listOf('C', 'B', 'A'),
         )
 
-        val actual = threeElements.permutations(3)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = threeElements.permutations(3).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `4 k permutations of 3 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = threeElements.permutations(4)
+        val expected = emptyList<List<Char>>()
+        val actual = threeElements.permutations(4).toList()
         assertEquals(expected, actual)
     }
 
@@ -200,20 +200,20 @@ class PermutationsTest {
 
     @Test
     fun `1 k permutations of 4 elements returns 4 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A'),
             listOf('B'),
             listOf('C'),
             listOf('D'),
         )
 
-        val actual = fourElements.permutations(1)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.permutations(1).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `2 k permutations of 4 elements returns 12 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B'),
             listOf('A', 'C'),
             listOf('A', 'D'),
@@ -228,13 +228,13 @@ class PermutationsTest {
             listOf('D', 'C'),
         )
 
-        val actual = fourElements.permutations(2)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.permutations(2).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `3 k permutations of 4 elements returns 24 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B', 'C'),
             listOf('A', 'B', 'D'),
             listOf('A', 'C', 'B'),
@@ -261,13 +261,13 @@ class PermutationsTest {
             listOf('D', 'C', 'B'),
         )
 
-        val actual = fourElements.permutations(3)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.permutations(3).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `4 k permutations of 4 elements returns 24 permutations`() {
-        val expected = sequenceOf(
+        val expected = listOf(
             listOf('A', 'B', 'C', 'D'),
             listOf('A', 'B', 'D', 'C'),
             listOf('A', 'C', 'B', 'D'),
@@ -294,14 +294,14 @@ class PermutationsTest {
             listOf('D', 'C', 'B', 'A'),
         )
 
-        val actual = fourElements.permutations(4)
-        assertEquals(expected.toList(), actual.toList())
+        val actual = fourElements.permutations(4).toList()
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `5 k permutations of 4 elements returns empty sequence`() {
-        val expected = emptySequence<List<Char>>()
-        val actual = fourElements.permutations(5)
+        val expected = emptyList<List<Char>>()
+        val actual = fourElements.permutations(5).toList()
         assertEquals(expected, actual)
     }
 }

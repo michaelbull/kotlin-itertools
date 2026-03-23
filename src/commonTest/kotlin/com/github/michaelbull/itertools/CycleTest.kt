@@ -7,8 +7,8 @@ class CycleTest {
 
     @Test
     fun `cycle of empty iterable returns empty sequence`() {
-        val expected = emptySequence<Int>()
-        val actual = emptyList<Int>().cycle()
+        val expected = emptyList<Int>()
+        val actual = emptyList<Int>().cycle().toList()
         assertEquals(expected, actual)
     }
 
