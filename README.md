@@ -51,7 +51,8 @@ dependencies {
 
 ### Combinations
 
-Returns a sequence that yields `k`-sized combinations of elements from this list.
+Returns a sequence that yields `k`-sized combinations of elements from this list. See also
+[Combinations with Replacement](#combinations-with-replacement) for allowing repeated elements.
 
 The combination tuples are emitted in lexicographic order according to the order of this list.
 
@@ -98,7 +99,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 ### Combinations with Replacement
 
 Returns a sequence that yields `k`-sized combinations of elements from this list, allowing individual elements to be
-repeated.
+repeated. See also [Combinations](#combinations) for without replacement.
 
 The combination tuples are emitted in lexicographic order according to the order of this list.
 
@@ -207,6 +208,10 @@ fun example2(): List<List<Char>> {
 
 Returns a sequence that yields `k`-sized permutations of elements from this list.
 
+Elements are treated as unique based on their position, not their value. See also
+[Distinct Permutations](#distinct-permutations) for value-based uniqueness, and
+[Permutations with Replacement](#permutations-with-replacement) for allowing repeated elements.
+
 The permutation tuples are emitted in lexicographic order according to the order of this list.
 
 ```kotlin
@@ -249,10 +254,45 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
+### Distinct Permutations
+
+Returns a sequence that yields distinct permutations of elements from this list. Unlike
+[Permutations](#permutations), elements are treated as unique based on their value, not their position — equal elements
+are interchangeable and the output contains no duplicates. See also
+[Permutations with Replacement](#permutations-with-replacement) for allowing repeated elements.
+
+```kotlin
+fun <T : Comparable<T>> List<T>.distinctPermutations(): Sequence<List<T>>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.distinctPermutations
+
+// [[A, A, B], [A, B, A], [B, A, A]]
+fun example1(): List<List<Char>> {
+    return "AAB".toList()
+        .distinctPermutations()
+        .toList()
+}
+
+// [[A, B, C], [A, C, B], [B, A, C], [B, C, A], [C, A, B], [C, B, A]]
+fun example2(): List<List<Char>> {
+    return "ABC".toList()
+        .distinctPermutations()
+        .toList()
+}
+```
+
+</details>
+
 ### Permutations with Replacement
 
 Returns a sequence that yields `k`-sized permutations of elements from this list, allowing individual elements to be
-repeated.
+repeated. See also [Permutations](#permutations) for without replacement, and
+[Distinct Permutations](#distinct-permutations) for value-based uniqueness.
 
 The permutation tuples are emitted in lexicographic order according to the order of this list.
 

@@ -4,8 +4,8 @@ package com.github.michaelbull.itertools
  * Returns a [Sequence] that yields [k]-sized [List] permutations of elements from this list, allowing individual
  * elements to be repeated.
  *
- * Like [permutations], elements are treated as unique based on their position, not their value, and the permutation
- * tuples are emitted in lexicographic order according to the order of this list.
+ * Like [permutations] and unlike [distinctPermutations], elements are treated as unique based on their position, not
+ * their value, and the permutation tuples are emitted in lexicographic order according to the order of this list.
  *
  * Unlike [permutations], elements may appear more than once in each permutation. Because elements can be reused, [k]
  * may exceed the size of this list and still produce results.
@@ -97,8 +97,8 @@ public fun <T> List<T>.triplePermutationsWithReplacement(): Sequence<Triple<T, T
  * Returns a [Sequence] that yields [k]-sized permutations of elements from this list, allowing individual elements
  * to be repeated, using the provided [permutation] function to transform each permutation's [indices] into [V].
  *
- * Like [permutations], elements are treated as unique based on their position, not their value, and the permutation
- * tuples are emitted in lexicographic order according to the order of this list.
+ * Like [permutations] and unlike [distinctPermutations], elements are treated as unique based on their position, not
+ * their value, and the permutation tuples are emitted in lexicographic order according to the order of this list.
  *
  * Unlike [permutations], elements may appear more than once in each permutation. Because elements can be reused, [k]
  * may exceed the size of this list and still produce results.

@@ -5,8 +5,12 @@ public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
 /**
  * Returns a [Sequence] that yields [k]-sized [List] permutations of elements from this list.
  *
- * Elements are treated as unique based on their position, not their value. The permutation tuples are emitted in
- * lexicographic order according to the order of this list.
+ * Unlike [distinctPermutations], elements are treated as unique based on their position, not their value — if this
+ * list contains duplicate values, the output may contain duplicate permutations.
+ *
+ * Unlike [permutationsWithReplacement], each element may appear at most once per permutation.
+ *
+ * The permutation tuples are emitted in lexicographic order according to the order of this list.
  *
  * ```
  * "ABCD".toList()
