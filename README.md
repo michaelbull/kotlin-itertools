@@ -302,6 +302,10 @@ Returns a sequence that yields the Cartesian product of the input iterables/list
 
 The product tuples are emitted in lexicographic order according to the order of this iterable/list.
 
+Unlike Python's `itertools.product(iterable, repeat=n)`, this function does not accept a `repeat` parameter.
+The Cartesian product of a list with itself is equivalent to
+[`permutationsWithReplacement`](#permutations-with-replacement).
+
 ```kotlin
 fun <A, B> Iterable<A>.product(other: Iterable<B>): Sequence<Pair<A, B>>
 fun <A, B, C> Iterable<A>.product(first: Iterable<B>, second: Iterable<C>): Sequence<Triple<A, B, C>>

@@ -136,6 +136,9 @@ public fun <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>>.product(): Se
  * - Python [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
  * - Ruby [Array#product](https://ruby-doc.org/3.3.0/Array.html#method-i-product)
  * - Rust [Itertools::cartesian_product](https://docs.rs/itertools/latest/itertools/trait.Itertools.html#method.cartesian_product)
+ *
+ * Unlike Python's `itertools.product(iterable, repeat=n)`, this function does not accept a `repeat` parameter. The
+ * Cartesian product of a list with itself is equivalent to [permutationsWithReplacement].
  */
 public fun <T> List<List<T>>.product(): Sequence<List<T>> {
     return if (isEmpty()) {
