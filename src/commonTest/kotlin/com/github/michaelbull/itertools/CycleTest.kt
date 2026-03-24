@@ -46,4 +46,46 @@ class CycleTest {
         val actual = "ABCD".toList().cycle().take(2).toList()
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `cycle times 0 returns empty sequence`() {
+        val expected = emptyList<Char>()
+        val actual = "ABC".toList().cycle(times = 0).toList()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `cycle negative times returns empty sequence`() {
+        val expected = emptyList<Char>()
+        val actual = "ABC".toList().cycle(times = -1).toList()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `cycle times 1 returns single iteration`() {
+        val expected = listOf('A', 'B', 'C')
+        val actual = "ABC".toList().cycle(times = 1).toList()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `cycle times 3 repeats three times`() {
+        val expected = listOf('A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C')
+        val actual = "ABC".toList().cycle(times = 3).toList()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `cycle times on empty iterable returns empty sequence`() {
+        val expected = emptyList<Int>()
+        val actual = emptyList<Int>().cycle(times = 5).toList()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `cycle times on single element repeats element`() {
+        val expected = listOf('A', 'A', 'A')
+        val actual = "A".toList().cycle(times = 3).toList()
+        assertEquals(expected, actual)
+    }
 }

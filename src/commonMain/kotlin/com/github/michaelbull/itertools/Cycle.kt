@@ -42,3 +42,40 @@ public fun <T> Iterable<T>.cycle(): Sequence<T> {
         }
     }
 }
+
+/**
+ * Returns a [Sequence] that yields elements from this iterable repeatedly for the specified number of [times],
+ * cycling back to the start after reaching the end.
+ *
+ * An empty iterable or a [times] value of zero or less yields an empty sequence.
+ *
+ * ```
+ * "ABC".toList()
+ *     .cycle(times = 3)
+ *     .toList()
+ *     // [A, B, C, A, B, C, A, B, C]
+ *
+ * "ABC".toList()
+ *     .cycle(times = 0)
+ *     .toList()
+ *     // []
+ * ```
+ *
+ * - Ruby [Array#cycle](https://ruby-doc.org/3.3.0/Array.html#method-i-cycle)
+ * - Swift [cycled(times:)](https://github.com/apple/swift-algorithms/blob/main/Guides/Cycle.md)
+ */
+public fun <T> Iterable<T>.cycle(times: Int): Sequence<T> {
+    val first = iterator()
+
+    return if (times <= 0 || !first.hasNext()) {
+        emptySequence()
+    } else {
+        sequence {
+            yieldAll(first)
+
+            repeat(times - 1) {
+                yieldAll(this@cycle.iterator())
+            }
+        }
+    }
+}
