@@ -33,9 +33,17 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Setup
         uses: ./.github/actions/setup
+
+      - name: Audit GitHub Actions
+        if: runner.os == 'Linux'
+        uses: zizmorcore/zizmor-action@71321a20a9ded102f6e9ce5718a2fcec2c4f70d8 # v0.5.2
+        with:
+          advanced-security: false
 
       - name: Build with Gradle Wrapper
         run: ./gradlew ${{ matrix.tasks }}
@@ -45,6 +53,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: github.ref == 'refs/heads/master' && github.repository == 'michaelbull/kotlin-itertools'
     needs: build
+    environment: Maven Central
 
     strategy:
       matrix:
@@ -84,6 +93,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Setup
         uses: ./.github/actions/setup
