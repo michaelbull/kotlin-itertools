@@ -91,7 +91,9 @@ Returns a list (or sequence) that alternates elements from two iterables. See al
 
 ```kotlin
 fun <T> Iterable<T>.interleave(other: Iterable<T>): List<T>
+
 fun <T, C : MutableCollection<in T>> Iterable<T>.interleaveTo(destination: C, other: Iterable<T>): C
+
 fun <T> Sequence<T>.interleave(other: Sequence<T>): Sequence<T>
 ```
 
@@ -123,7 +125,9 @@ Returns a list (or sequence) that alternates elements from two iterables, contin
 
 ```kotlin
 fun <T> Iterable<T>.interleaveLongest(other: Iterable<T>): List<T>
+
 fun <T, C : MutableCollection<in T>> Iterable<T>.interleaveLongestTo(destination: C, other: Iterable<T>): C
+
 fun <T> Sequence<T>.interleaveLongest(other: Sequence<T>): Sequence<T>
 ```
 
@@ -154,7 +158,9 @@ Returns a list (or sequence) with a separator inserted between each pair of adja
 
 ```kotlin
 fun <T> Iterable<T>.intersperse(separator: T): List<T>
+
 fun <T, C : MutableCollection<in T>> Iterable<T>.intersperseTo(destination: C, separator: T): C
+
 fun <T> Sequence<T>.intersperse(separator: T): Sequence<T>
 ```
 
