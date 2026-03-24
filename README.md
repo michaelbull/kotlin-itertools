@@ -334,12 +334,6 @@ Bug reports and pull requests are welcome on [GitHub][github].
 This project is available under the terms of the ISC license. See the
 [`LICENSE`](LICENSE) file for the copyright information and licensing terms.
 
-[python-itertools]: https://docs.python.org/3/library/itertools.html
-
-[advent-2023]: https://github.com/michaelbull/advent-2023
-
-[github]: https://github.com/michaelbull/kotlin-itertools
-
 [//]: # (@formatter:off)
 [badge-android]: http://img.shields.io/badge/-android-6EDB8D.svg?style=flat
 [badge-android-native]: http://img.shields.io/badge/support-[AndroidNative]-6EDB8D.svg?style=flat
@@ -355,4 +349,8 @@ This project is available under the terms of the ISC license. See the
 [badge-mac]: http://img.shields.io/badge/-macos-111111.svg?style=flat
 [badge-watchos]: http://img.shields.io/badge/-watchos-C0C0C0.svg?style=flat
 [badge-tvos]: http://img.shields.io/badge/-tvos-808080.svg?style=flat
+
+[python-itertools]: https://docs.python.org/3/library/itertools.html
+[advent-2023]: https://github.com/michaelbull/advent-2023
+[github]: https://github.com/michaelbull/kotlin-itertools
 [//]: # (@formatter:on)
