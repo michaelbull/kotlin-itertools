@@ -220,17 +220,64 @@ fun example1(): List<List<Char>> {
         .toList()
 }
 
-// [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)]
-fun example2(): List<Pair<Int, Int>> {
-    return (0..2).toList()
+// [(A, B), (A, C), (A, D), (B, A), (B, C), (B, D), (C, A), (C, B), (C, D), (D, A), (D, B), (D, C)]
+fun example2(): List<Pair<Char, Char>> {
+    return "ABCD".toList()
         .pairPermutations()
         .toList()
 }
 
-// [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]
-fun example3(): List<Triple<Int, Int, Int>> {
-    return (0..2).toList()
+// [(A, B, C), (A, B, D), (A, C, B), (A, C, D), (A, D, B), (A, D, C), (B, A, C), (B, A, D), (B, C, A), (B, C, D), (B, D, A), (B, D, C), (C, A, B), (C, A, D), (C, B, A), (C, B, D), (C, D, A), (C, D, B), (D, A, B), (D, A, C), (D, B, A), (D, B, C), (D, C, A), (D, C, B)]
+fun example3(): List<Triple<Char, Char, Char>> {
+    return "ABCD".toList()
         .triplePermutations()
+        .toList()
+}
+```
+
+</details>
+
+### Permutations with Replacement
+
+Returns a sequence that yields `k`-sized permutations of elements from this list, allowing individual elements to be
+repeated.
+
+The permutation tuples are emitted in lexicographic order according to the order of this list.
+
+```kotlin
+fun <T> List<T>.permutationsWithReplacement(k: Int = size): Sequence<List<T>>
+
+fun <T> List<T>.pairPermutationsWithReplacement(): Sequence<Pair<T, T>>
+
+fun <T> List<T>.triplePermutationsWithReplacement(): Sequence<Triple<T, T, T>>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.permutationsWithReplacement
+import com.github.michaelbull.itertools.pairPermutationsWithReplacement
+import com.github.michaelbull.itertools.triplePermutationsWithReplacement
+
+// [[A, A], [A, B], [A, C], [A, D], [B, A], [B, B], [B, C], [B, D], [C, A], [C, B], [C, C], [C, D], [D, A], [D, B], [D, C], [D, D]]
+fun example1(): List<List<Char>> {
+    return "ABCD".toList()
+        .permutationsWithReplacement(k = 2)
+        .toList()
+}
+
+// [(A, A), (A, B), (A, C), (B, A), (B, B), (B, C), (C, A), (C, B), (C, C)]
+fun example2(): List<Pair<Char, Char>> {
+    return "ABC".toList()
+        .pairPermutationsWithReplacement()
+        .toList()
+}
+
+// [(A, A, A), (A, A, B), (A, A, C), (A, B, A), (A, B, B), (A, B, C), (A, C, A), (A, C, B), (A, C, C), (B, A, A), (B, A, B), (B, A, C), (B, B, A), (B, B, B), (B, B, C), (B, C, A), (B, C, B), (B, C, C), (C, A, A), (C, A, B), (C, A, C), (C, B, A), (C, B, B), (C, B, C), (C, C, A), (C, C, B), (C, C, C)]
+fun example3(): List<Triple<Char, Char, Char>> {
+    return "ABC".toList()
+        .triplePermutationsWithReplacement()
         .toList()
 }
 ```

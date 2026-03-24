@@ -14,11 +14,6 @@ public val EmptyPermutation: Sequence<List<Nothing>> = sequenceOf(emptyList())
  *     .toList()
  *     // [[A, B], [A, C], [A, D], [B, A], [B, C], [B, D], [C, A], [C, B], [C, D], [D, A], [D, B], [D, C]]
  *
- * (0..2).toList()
- *     .permutations()
- *     .toList()
- *     // [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]]
- *
  * listOf(1, 2, 3)
  *     .permutations(k = 0)
  *     .toList()
@@ -62,11 +57,6 @@ public fun <T> List<T>.permutations(k: Int = size): Sequence<List<T>> {
  *     .pairPermutations()
  *     .toList()
  *     // [(A, B), (A, C), (A, D), (B, A), (B, C), (B, D), (C, A), (C, B), (C, D), (D, A), (D, B), (D, C)]
- *
- * (0..2).toList()
- *     .pairPermutations()
- *     .toList()
- *     // [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)]
  * ```
  *
  * - Clojure [clojure.math.combinatorics/permutations](https://github.com/clojure/math.combinatorics#permutations)
@@ -95,11 +85,6 @@ public fun <T> List<T>.pairPermutations(): Sequence<Pair<T, T>> {
  *     .triplePermutations()
  *     .toList()
  *     // [(A, B, C), (A, B, D), (A, C, B), (A, C, D), (A, D, B), (A, D, C), (B, A, C), (B, A, D), (B, C, A), (B, C, D), (B, D, A), (B, D, C), (C, A, B), (C, A, D), (C, B, A), (C, B, D), (C, D, A), (C, D, B), (D, A, B), (D, A, C), (D, B, A), (D, B, C), (D, C, A), (D, C, B)]
- *
- * (0..2).toList()
- *     .triplePermutations()
- *     .toList()
- *     // [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]
  * ```
  *
  * - Clojure [clojure.math.combinatorics/permutations](https://github.com/clojure/math.combinatorics#permutations)
