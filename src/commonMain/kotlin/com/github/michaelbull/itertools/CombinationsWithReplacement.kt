@@ -130,7 +130,7 @@ public inline fun <T, V> List<T>.combinationsWithReplacement(
 
             yield(combination(indices, k))
 
-            while (advanceWithReplacement(indices, k - 1)) {
+            while (advanceCombinationWithReplacement(indices, k - 1)) {
                 yield(combination(indices, k))
             }
         }
@@ -138,25 +138,25 @@ public inline fun <T, V> List<T>.combinationsWithReplacement(
 }
 
 @PublishedApi
-internal tailrec fun <T> List<T>.advanceWithReplacement(indices: IntArray, index: Int): Boolean {
+internal tailrec fun <T> List<T>.advanceCombinationWithReplacement(indices: IntArray, index: Int): Boolean {
     if (index < 0) return false
 
-    return if (exhaustedWithReplacement(indices, index)) {
-        advanceWithReplacement(indices, index - 1)
+    return if (exhaustedCombinationWithReplacement(indices, index)) {
+        advanceCombinationWithReplacement(indices, index - 1)
     } else {
         indices[index]++
-        indices.resetTailWithReplacement(index + 1, indices[index])
+        indices.resetCombinationWithReplacementTail(index + 1, indices[index])
         true
     }
 }
 
 @PublishedApi
-internal fun <T> List<T>.exhaustedWithReplacement(indices: IntArray, index: Int): Boolean {
+internal fun <T> List<T>.exhaustedCombinationWithReplacement(indices: IntArray, index: Int): Boolean {
     return indices[index] == lastIndex
 }
 
 @PublishedApi
-internal fun IntArray.resetTailWithReplacement(fromIndex: Int, value: Int) {
+internal fun IntArray.resetCombinationWithReplacementTail(fromIndex: Int, value: Int) {
     for (i in fromIndex..lastIndex) {
         this[i] = value
     }

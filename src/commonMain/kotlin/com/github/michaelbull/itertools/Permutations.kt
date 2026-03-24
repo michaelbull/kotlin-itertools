@@ -186,7 +186,7 @@ public inline fun <T, V> List<T>.permutations(
 
             yield(permutation(indices, k))
 
-            while (advance(indices, k - 1, cycles)) {
+            while (advancePermutation(indices, k - 1, cycles)) {
                 yield(permutation(indices, k))
             }
         }
@@ -194,44 +194,44 @@ public inline fun <T, V> List<T>.permutations(
 }
 
 @PublishedApi
-internal tailrec fun <T> List<T>.advance(indices: IntArray, index: Int, cycles: IntArray): Boolean {
+internal tailrec fun <T> List<T>.advancePermutation(indices: IntArray, index: Int, cycles: IntArray): Boolean {
     if (index < 0) return false
 
-    return if (exhausted(cycles, index)) {
-        resetCycle(indices, index, cycles)
-        advance(indices, index - 1, cycles)
+    return if (exhaustedPermutation(cycles, index)) {
+        resetPermutationCycle(indices, index, cycles)
+        advancePermutation(indices, index - 1, cycles)
     } else {
         cycles[index]--
-        indices.swapAt(index, size - cycles[index])
+        indices.swapPermutationAt(index, size - cycles[index])
         true
     }
 }
 
 @PublishedApi
-internal fun exhausted(cycles: IntArray, index: Int): Boolean {
+internal fun exhaustedPermutation(cycles: IntArray, index: Int): Boolean {
     return cycles[index] == 1
 }
 
 @PublishedApi
-internal fun <T> List<T>.resetCycle(indices: IntArray, fromIndex: Int, cycles: IntArray) {
+internal fun <T> List<T>.resetPermutationCycle(indices: IntArray, fromIndex: Int, cycles: IntArray) {
     val current = indices[fromIndex]
     val remaining = size - fromIndex
 
     cycles[fromIndex] = remaining
 
-    indices.shiftLeft(fromIndex)
+    indices.shiftPermutationLeft(fromIndex)
     indices[lastIndex] = current
 }
 
 @PublishedApi
-internal fun IntArray.shiftLeft(fromIndex: Int) {
+internal fun IntArray.shiftPermutationLeft(fromIndex: Int) {
     for (index in fromIndex..<lastIndex) {
         this[index] = this[index + 1]
     }
 }
 
 @PublishedApi
-internal fun IntArray.swapAt(a: Int, b: Int) {
+internal fun IntArray.swapPermutationAt(a: Int, b: Int) {
     this[a] = this[b].also {
         this[b] = this[a]
     }

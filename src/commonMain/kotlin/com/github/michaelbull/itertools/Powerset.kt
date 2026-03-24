@@ -36,7 +36,7 @@ public fun <T> List<T>.powerset(): Sequence<List<T>> {
 
                 yield(combination(indices, k))
 
-                while (advance(indices, k - 1, k)) {
+                while (advanceCombination(indices, k - 1, k)) {
                     yield(combination(indices, k))
                 }
             }

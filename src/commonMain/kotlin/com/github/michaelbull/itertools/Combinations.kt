@@ -189,7 +189,7 @@ public inline fun <T, V> List<T>.combinations(
 
             yield(combination(indices, k))
 
-            while (advance(indices, k - 1, k)) {
+            while (advanceCombination(indices, k - 1, k)) {
                 yield(combination(indices, k))
             }
         }
@@ -197,25 +197,25 @@ public inline fun <T, V> List<T>.combinations(
 }
 
 @PublishedApi
-internal tailrec fun <T> List<T>.advance(indices: IntArray, index: Int, k: Int): Boolean {
+internal tailrec fun <T> List<T>.advanceCombination(indices: IntArray, index: Int, k: Int): Boolean {
     if (index < 0) return false
 
-    return if (exhausted(indices, index, k)) {
-        advance(indices, index - 1, k)
+    return if (exhaustedCombination(indices, index, k)) {
+        advanceCombination(indices, index - 1, k)
     } else {
         indices[index]++
-        indices.resetTail(index + 1, k)
+        indices.resetCombinationTail(index + 1, k)
         true
     }
 }
 
 @PublishedApi
-internal fun <T> List<T>.exhausted(indices: IntArray, index: Int, k: Int): Boolean {
+internal fun <T> List<T>.exhaustedCombination(indices: IntArray, index: Int, k: Int): Boolean {
     return indices[index] == index + size - k
 }
 
 @PublishedApi
-internal fun IntArray.resetTail(fromIndex: Int, toIndex: Int) {
+internal fun IntArray.resetCombinationTail(fromIndex: Int, toIndex: Int) {
     for (i in fromIndex..<toIndex) {
         this[i] = this[i - 1] + 1
     }
