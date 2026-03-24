@@ -84,6 +84,95 @@ fun example2(): List<Char> {
 
 </details>
 
+### Interleave
+
+Returns a list (or sequence) that alternates elements from two iterables. See also
+[Interleave Longest](#interleave-longest) to continue until both are exhausted.
+
+```kotlin
+fun <T> Iterable<T>.interleave(other: Iterable<T>): List<T>
+fun <T, C : MutableCollection<in T>> Iterable<T>.interleaveTo(destination: C, other: Iterable<T>): C
+fun <T> Sequence<T>.interleave(other: Sequence<T>): Sequence<T>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.interleave
+
+// [1, 2, 3, 4, 5, 6]
+fun example1(): List<Int> {
+    return listOf(1, 3, 5)
+        .interleave(listOf(2, 4, 6))
+}
+
+// [1, 2, 3, 4]
+fun example2(): List<Int> {
+    return listOf(1, 3, 5)
+        .interleave(listOf(2, 4))
+}
+```
+
+</details>
+
+### Interleave Longest
+
+Returns a list (or sequence) that alternates elements from two iterables, continuing until both are exhausted. See also
+[Interleave](#interleave) to stop at the shorter.
+
+```kotlin
+fun <T> Iterable<T>.interleaveLongest(other: Iterable<T>): List<T>
+fun <T, C : MutableCollection<in T>> Iterable<T>.interleaveLongestTo(destination: C, other: Iterable<T>): C
+fun <T> Sequence<T>.interleaveLongest(other: Sequence<T>): Sequence<T>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.interleaveLongest
+
+// [1, 2, 3, 4, 5]
+fun example1(): List<Int> {
+    return listOf(1, 3, 5)
+        .interleaveLongest(listOf(2, 4))
+}
+
+// [1, 2, 4, 6]
+fun example2(): List<Int> {
+    return listOf(1)
+        .interleaveLongest(listOf(2, 4, 6))
+}
+```
+
+</details>
+
+### Intersperse
+
+Returns a list (or sequence) with a separator inserted between each pair of adjacent elements.
+
+```kotlin
+fun <T> Iterable<T>.intersperse(separator: T): List<T>
+fun <T, C : MutableCollection<in T>> Iterable<T>.intersperseTo(destination: C, separator: T): C
+fun <T> Sequence<T>.intersperse(separator: T): Sequence<T>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.intersperse
+
+// [A, -, B, -, C]
+fun example1(): List<Char> {
+    return "ABC".toList()
+        .intersperse('-')
+}
+```
+
+</details>
+
 ## Combinatoric Sequences
 
 ### Combinations
