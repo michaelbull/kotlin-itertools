@@ -19,7 +19,19 @@
 ![badge][badge-android-native]
 ![badge][badge-apple-silicon]
 
-Multiplatform combinatoric sequences for Kotlin, inspired by [python-itertools][python-itertools].
+Multiplatform iterator tools and combinatoric sequences for Kotlin.
+
+Inspired by:
+
+- [Clojure math.combinatorics][clojure-combinatorics]
+- [Elixir Enum][elixir-enum]
+- [Haskell Math.Combinat][haskell-combinat]
+- [Julia Combinatorics.jl][julia-combinatorics]
+- [Python itertools][python-itertools]
+- [Ruby Array][ruby-array]
+- [Rust itertools][rust-itertools]
+- [Scala SeqOps][scala-seqops]
+- [Swift Algorithms][swift-algorithms]
 
 Initially built as part of my solutions for [Advent of Code 2023][advent-2023].
 
@@ -397,7 +409,15 @@ This project is available under the terms of the ISC license. See the
 [badge-watchos]: http://img.shields.io/badge/-watchos-C0C0C0.svg?style=flat
 [badge-tvos]: http://img.shields.io/badge/-tvos-808080.svg?style=flat
 
+[clojure-combinatorics]: https://github.com/clojure/math.combinatorics
+[elixir-enum]: https://hexdocs.pm/elixir/Enum.html
+[haskell-combinat]: https://hackage.haskell.org/package/combinat
+[julia-combinatorics]: https://juliamath.github.io/Combinatorics.jl/stable/
 [python-itertools]: https://docs.python.org/3/library/itertools.html
+[ruby-array]: https://ruby-doc.org/3.3.0/Array.html
+[rust-itertools]: https://docs.rs/itertools/latest/itertools/trait.Itertools.html
+[scala-seqops]: https://www.scala-lang.org/api/current/scala/collection/SeqOps.html
+[swift-algorithms]: https://github.com/apple/swift-algorithms
 [advent-2023]: https://github.com/michaelbull/advent-2023
 [github]: https://github.com/michaelbull/kotlin-itertools
 [//]: # (@formatter:on)
