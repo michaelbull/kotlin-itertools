@@ -297,6 +297,8 @@ reaching the end.
 
 ```kotlin
 fun <T> Iterable<T>.cycle(): Sequence<T>
+
+fun <T> Iterable<T>.cycle(times: Int): Sequence<T>
 ```
 
 <details>
@@ -310,6 +312,13 @@ fun example1(): List<Char> {
     return "ABC".toList()
         .cycle()
         .take(7)
+        .toList()
+}
+
+// [A, B, C, A, B, C, A, B, C]
+fun example2(): List<Char> {
+    return "ABC".toList()
+        .cycle(times = 3)
         .toList()
 }
 ```
