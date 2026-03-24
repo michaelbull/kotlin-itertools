@@ -47,11 +47,9 @@ dependencies {
 }
 ```
 
-## Usage
+## Iterator Tools
 
-### Iterator Tools
-
-#### Cycle
+### Cycle
 
 Returns an infinite sequence that yields elements from this iterable repeatedly, cycling back to the start after
 reaching the end.
@@ -86,9 +84,9 @@ fun example2(): List<Char> {
 
 </details>
 
-### Combinatoric Sequences
+## Combinatoric Sequences
 
-#### Combinations
+### Combinations
 
 Returns a sequence that yields `k`-sized combinations of elements from this list. See also
 [Combinations with Replacement](#combinations-with-replacement) for allowing repeated elements, and
@@ -136,7 +134,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-#### Combinations with Replacement
+### Combinations with Replacement
 
 Returns a sequence that yields `k`-sized combinations of elements from this list, allowing individual elements to be
 repeated. See also [Combinations](#combinations) for without replacement.
@@ -183,7 +181,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-#### Powerset
+### Powerset
 
 Returns a sequence that yields all subsets of this list, from the empty set to the full set. Equivalent to
 [combinations](#combinations) for every `k` from `0` to `size`.
@@ -211,7 +209,7 @@ fun example1(): List<List<Char>> {
 
 </details>
 
-#### Permutations
+### Permutations
 
 Returns a sequence that yields `k`-sized permutations of elements from this list.
 
@@ -261,7 +259,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-#### Distinct Permutations
+### Distinct Permutations
 
 Returns a sequence that yields distinct permutations of elements from this list. Unlike
 [Permutations](#permutations), elements are treated as unique based on their value, not their position — equal elements
@@ -295,7 +293,7 @@ fun example2(): List<List<Char>> {
 
 </details>
 
-#### Permutations with Replacement
+### Permutations with Replacement
 
 Returns a sequence that yields `k`-sized permutations of elements from this list, allowing individual elements to be
 repeated. See also [Permutations](#permutations) for without replacement, and
@@ -343,7 +341,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-#### Derangements
+### Derangements
 
 Returns a sequence that yields `k`-sized derangements of elements from this list. A derangement is a permutation where
 no element appears in its original position.
@@ -377,7 +375,7 @@ fun example2(): List<List<Char>> {
 
 </details>
 
-#### Cartesian Product
+### Cartesian Product
 
 Returns a sequence that yields the Cartesian product of the input iterables/lists.
 
