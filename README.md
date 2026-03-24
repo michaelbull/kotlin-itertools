@@ -49,10 +49,50 @@ dependencies {
 
 ## Usage
 
-### Combinations
+### Iterator Tools
+
+#### Cycle
+
+Returns an infinite sequence that yields elements from this iterable repeatedly, cycling back to the start after
+reaching the end.
+
+```kotlin
+fun <T> Iterable<T>.cycle(): Sequence<T>
+
+fun <T> Iterable<T>.cycle(times: Int): Sequence<T>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.cycle
+
+// [A, B, C, A, B, C, A]
+fun example1(): List<Char> {
+    return "ABC".toList()
+        .cycle()
+        .take(7)
+        .toList()
+}
+
+// [A, B, C, A, B, C, A, B, C]
+fun example2(): List<Char> {
+    return "ABC".toList()
+        .cycle(times = 3)
+        .toList()
+}
+```
+
+</details>
+
+### Combinatoric Sequences
+
+#### Combinations
 
 Returns a sequence that yields `k`-sized combinations of elements from this list. See also
-[Combinations with Replacement](#combinations-with-replacement) for allowing repeated elements.
+[Combinations with Replacement](#combinations-with-replacement) for allowing repeated elements, and
+[Powerset](#powerset) for all subsets across all sizes.
 
 The combination tuples are emitted in lexicographic order according to the order of this list.
 
@@ -96,7 +136,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-### Combinations with Replacement
+#### Combinations with Replacement
 
 Returns a sequence that yields `k`-sized combinations of elements from this list, allowing individual elements to be
 repeated. See also [Combinations](#combinations) for without replacement.
@@ -143,9 +183,10 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-### Powerset
+#### Powerset
 
-Returns a sequence that yields all subsets of this list, from the empty set to the full set.
+Returns a sequence that yields all subsets of this list, from the empty set to the full set. Equivalent to
+[combinations](#combinations) for every `k` from `0` to `size`.
 
 Subsets are emitted in order of increasing size. Within each size, subsets are emitted in lexicographic order according
 to the order of this list.
@@ -170,41 +211,7 @@ fun example1(): List<List<Char>> {
 
 </details>
 
-### Derangements
-
-Returns a sequence that yields `k`-sized derangements of elements from this list. A derangement is a permutation where
-no element appears in its original position.
-
-The derangement tuples are emitted in lexicographic order according to the order of this list.
-
-```kotlin
-fun <T> List<T>.derangements(k: Int = size): Sequence<List<T>>
-```
-
-<details>
-<summary><strong>Examples</strong></summary>
-
-```kotlin
-import com.github.michaelbull.itertools.derangements
-
-// [[B, C, A], [C, A, B]]
-fun example1(): List<List<Char>> {
-    return "ABC".toList()
-        .derangements()
-        .toList()
-}
-
-// [[B, A], [B, C], [B, D], [C, A], [C, D], [D, A], [D, C]]
-fun example2(): List<List<Char>> {
-    return "ABCD".toList()
-        .derangements(k = 2)
-        .toList()
-}
-```
-
-</details>
-
-### Permutations
+#### Permutations
 
 Returns a sequence that yields `k`-sized permutations of elements from this list.
 
@@ -254,7 +261,7 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-### Distinct Permutations
+#### Distinct Permutations
 
 Returns a sequence that yields distinct permutations of elements from this list. Unlike
 [Permutations](#permutations), elements are treated as unique based on their value, not their position — equal elements
@@ -288,7 +295,7 @@ fun example2(): List<List<Char>> {
 
 </details>
 
-### Permutations with Replacement
+#### Permutations with Replacement
 
 Returns a sequence that yields `k`-sized permutations of elements from this list, allowing individual elements to be
 repeated. See also [Permutations](#permutations) for without replacement, and
@@ -336,7 +343,41 @@ fun example3(): List<Triple<Char, Char, Char>> {
 
 </details>
 
-### Cartesian Product
+#### Derangements
+
+Returns a sequence that yields `k`-sized derangements of elements from this list. A derangement is a permutation where
+no element appears in its original position.
+
+The derangement tuples are emitted in lexicographic order according to the order of this list.
+
+```kotlin
+fun <T> List<T>.derangements(k: Int = size): Sequence<List<T>>
+```
+
+<details>
+<summary><strong>Examples</strong></summary>
+
+```kotlin
+import com.github.michaelbull.itertools.derangements
+
+// [[B, C, A], [C, A, B]]
+fun example1(): List<List<Char>> {
+    return "ABC".toList()
+        .derangements()
+        .toList()
+}
+
+// [[B, A], [B, C], [B, D], [C, A], [C, D], [D, A], [D, C]]
+fun example2(): List<List<Char>> {
+    return "ABCD".toList()
+        .derangements(k = 2)
+        .toList()
+}
+```
+
+</details>
+
+#### Cartesian Product
 
 Returns a sequence that yields the Cartesian product of the input iterables/lists.
 
@@ -387,41 +428,6 @@ fun example3(): List<List<Char>> {
 
     return listOf(a, b)
         .product()
-        .toList()
-}
-```
-
-</details>
-
-### Cycle
-
-Returns an infinite sequence that yields elements from this iterable repeatedly, cycling back to the start after
-reaching the end.
-
-```kotlin
-fun <T> Iterable<T>.cycle(): Sequence<T>
-
-fun <T> Iterable<T>.cycle(times: Int): Sequence<T>
-```
-
-<details>
-<summary><strong>Examples</strong></summary>
-
-```kotlin
-import com.github.michaelbull.itertools.cycle
-
-// [A, B, C, A, B, C, A]
-fun example1(): List<Char> {
-    return "ABC".toList()
-        .cycle()
-        .take(7)
-        .toList()
-}
-
-// [A, B, C, A, B, C, A, B, C]
-fun example2(): List<Char> {
-    return "ABC".toList()
-        .cycle(times = 3)
         .toList()
 }
 ```
