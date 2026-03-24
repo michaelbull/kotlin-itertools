@@ -1,0 +1,41 @@
+# kotlin-itertools
+
+> Multiplatform iterator tools and combinatoric sequences for Kotlin.
+
+Kotlin Multiplatform library providing lazy `Sequence`-based iterator tools and combinatoric functions, inspired by Python's itertools.
+
+Published to Maven Central as `com.michael-bull.kotlin-itertools`.
+
+## Full Documentation
+
+- [llms-full.txt](https://github.com/michaelbull/kotlin-itertools/blob/master/llms-full.txt): Comprehensive API reference with signatures, descriptions, and examples — self-contained, no web fetches required
+
+## Installation
+
+```groovy
+dependencies {
+    implementation("com.michael-bull.kotlin-itertools:kotlin-itertools:1.1.0")
+}
+```
+
+## API Overview
+
+All functions are extension functions that return lazy `Sequence<T>` types.
+
+### Iterator Tools
+
+- `Iterable<T>.cycle()` / `cycle(times)` — infinite or bounded cycling of elements
+- `Iterable<T>.interleave(other)` / `Sequence<T>.interleave(other)` — alternate elements from two iterables, stopping at the shorter
+- `Iterable<T>.interleaveLongest(other)` / `Sequence<T>.interleaveLongest(other)` — alternate elements, continuing until both exhausted
+- `Iterable<T>.intersperse(separator)` / `Sequence<T>.intersperse(separator)` — insert separator between adjacent elements
+
+### Combinatoric Sequences
+
+- `List<T>.combinations(k)` / `pairCombinations()` / `tripleCombinations()` — k-sized combinations
+- `List<T>.combinationsWithReplacement(k)` / `pairCombinationsWithReplacement()` / `tripleCombinationsWithReplacement()` — combinations allowing repeated elements
+- `List<T>.powerset()` — all subsets from empty to full
+- `List<T>.permutations(k)` / `pairPermutations()` / `triplePermutations()` — k-sized permutations
+- `List<T>.distinctPermutations()` — permutations with value-based uniqueness
+- `List<T>.permutationsWithReplacement(k)` / `pairPermutationsWithReplacement()` / `triplePermutationsWithReplacement()` — permutations allowing repeated elements
+- `List<T>.derangements(k)` — permutations where no element stays in its original position
+- `Iterable<A>.product(other)` / `product(first, second)` / `List<List<T>>.product()` — Cartesian product
