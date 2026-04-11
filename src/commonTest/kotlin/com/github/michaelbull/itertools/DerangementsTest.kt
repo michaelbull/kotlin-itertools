@@ -1,112 +1,128 @@
 package com.github.michaelbull.itertools
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.list
+import io.kotest.property.checkAll
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNotEquals
+
+/**
+ * Partial derangement counts: PARTIAL_DERANGEMENT[n][k] = D(n, k)
+ * The number of k-permutations of n elements where no element appears in its original position.
+ * https://oeis.org/A000166 (diagonal k=n is the subfactorial sequence)
+ */
+private val PARTIAL_DERANGEMENT = listOf(
+    listOf(1),
+    listOf(1, 0),
+    listOf(1, 1, 1),
+    listOf(1, 2, 3, 2),
+    listOf(1, 3, 7, 11, 9),
+    listOf(1, 4, 13, 32, 53, 44),
+    listOf(1, 5, 21, 71, 181, 309, 265),
+)
 
 class DerangementsTest {
 
     @Test
-    fun `-1 k derangements of 0 elements throws`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
-            emptyList<Char>().derangements(-1)
+    fun `negative k throws`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.int(Int.MIN_VALUE..-1)) { elements, k ->
+            assertFailsWith<IllegalArgumentException> {
+                elements.derangements(k)
+            }
         }
-
-        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 k derangements of 0 elements returns 1 derangement`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = emptyList<Char>().derangements(0).toList()
-        assertEquals(expected, actual)
+    fun `k of 0 returns one empty derangement`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6)) { elements ->
+            assertEquals(
+                expected = listOf(emptyList()),
+                actual = elements.derangements(0).toList(),
+            )
+        }
     }
 
     @Test
-    fun `derangements of 0 elements returns 1 derangement`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = emptyList<Char>().derangements().toList()
-        assertEquals(expected, actual)
+    fun `k exceeding size returns empty sequence`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..5), Arb.int(1..6)) { elements, extra ->
+            assertEquals(
+                expected = emptyList(),
+                actual = elements.derangements(elements.size + extra).toList(),
+            )
+        }
     }
 
     @Test
-    fun `derangements of 1 element returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = "A".toList().derangements().toList()
-        assertEquals(expected, actual)
+    fun `no element at position i equals source element at position i`() = runTest {
+        checkAll(200, Arb.int(1..6), Arb.int(1..6)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
+
+            elements.derangements(k).forEach { derangement ->
+                derangement.forEachIndexed { i, element ->
+                    assertNotEquals(
+                        illegal = elements[i],
+                        actual = element,
+                    )
+                }
+            }
+        }
     }
 
     @Test
-    fun `derangements of 2 elements returns 1 derangement`() {
-        val expected = listOf(
-            listOf('B', 'A'),
-        )
+    fun `every derangement has exactly k elements`() = runTest {
+        checkAll(200, Arb.int(1..6), Arb.int(1..6)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
 
-        val actual = "AB".toList().derangements().toList()
-        assertEquals(expected, actual)
+            elements.derangements(k).forEach { derangement ->
+                assertEquals(
+                    expected = k,
+                    actual = derangement.size,
+                )
+            }
+        }
     }
 
     @Test
-    fun `derangements of 3 elements returns 2 derangements`() {
-        val expected = listOf(
-            listOf('B', 'C', 'A'),
-            listOf('C', 'A', 'B'),
-        )
+    fun `no duplicate derangements when elements are distinct`() = runTest {
+        checkAll(200, Arb.int(0..5), Arb.int(0..5)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
+            val results = elements.derangements(k).toList()
 
-        val actual = "ABC".toList().derangements().toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = results.size,
+                actual = results.distinct().size,
+            )
+        }
     }
 
     @Test
-    fun `derangements of 4 elements returns 9 derangements`() {
-        val expected = listOf(
-            listOf('B', 'A', 'D', 'C'),
-            listOf('B', 'C', 'D', 'A'),
-            listOf('B', 'D', 'A', 'C'),
-            listOf('C', 'A', 'D', 'B'),
-            listOf('C', 'D', 'A', 'B'),
-            listOf('C', 'D', 'B', 'A'),
-            listOf('D', 'A', 'B', 'C'),
-            listOf('D', 'C', 'A', 'B'),
-            listOf('D', 'C', 'B', 'A'),
-        )
+    fun `count equals partial derangement formula`() = runTest {
+        checkAll(200, Arb.int(PARTIAL_DERANGEMENT.indices), Arb.int(PARTIAL_DERANGEMENT.indices)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
 
-        val actual = "ABCD".toList().derangements().toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = PARTIAL_DERANGEMENT[n][k],
+                actual = elements.derangements(k).count(),
+            )
+        }
     }
 
     @Test
-    fun `2 k derangements of 3 elements returns 3 derangements`() {
-        val expected = listOf(
-            listOf('B', 'A'),
-            listOf('B', 'C'),
-            listOf('C', 'A'),
-        )
+    fun `derangements are in lexicographic order`() = runTest {
+        checkAll(200, Arb.int(1..6), Arb.int(1..6)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
+            val results = elements.derangements(k).toList()
 
-        val actual = "ABC".toList().derangements(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `2 k derangements of 4 elements returns 7 derangements`() {
-        val expected = listOf(
-            listOf('B', 'A'),
-            listOf('B', 'C'),
-            listOf('B', 'D'),
-            listOf('C', 'A'),
-            listOf('C', 'D'),
-            listOf('D', 'A'),
-            listOf('D', 'C'),
-        )
-
-        val actual = "ABCD".toList().derangements(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `k exceeding size returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = "AB".toList().derangements(3).toList()
-        assertEquals(expected, actual)
+            results.assertLexicographicallyOrdered()
+        }
     }
 }

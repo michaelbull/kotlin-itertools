@@ -1,240 +1,139 @@
 package com.github.michaelbull.itertools
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.list
+import io.kotest.property.checkAll
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class CombinationsTest {
 
-    private val zeroElements = emptyList<Char>()
-    private val oneElement = "A".toList()
-    private val twoElements = "AB".toList()
-    private val threeElements = "ABC".toList()
-    private val fourElements = "ABCD".toList()
-
     @Test
-    fun `-1 k combinations of 0 elements throws`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
-            zeroElements.combinations(-1)
+    fun `negative k throws`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.int(Int.MIN_VALUE..-1)) { elements, k ->
+            assertFailsWith<IllegalArgumentException> {
+                elements.combinations(k)
+            }
         }
-
-        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 k combinations of 0 elements returns 1 combination`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = zeroElements.combinations(0).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `1 k combinations of 0 elements returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = zeroElements.combinations(1).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `2 k combinations of 0 elements returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = zeroElements.combinations(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `-1 k combinations of 1 element throws`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
-            oneElement.combinations(-1)
+    fun `k of 0 returns one empty combination`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6)) { elements ->
+            assertEquals(
+                expected = listOf(emptyList()),
+                actual = elements.combinations(0).toList(),
+            )
         }
-
-        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 k combinations of 1 element returns 1 combination`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = oneElement.combinations(0).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `1 k combinations of 1 element returns 1 combination`() {
-        val expected = listOf(listOf('A'))
-        val actual = oneElement.combinations(1).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `2 k combinations of 1 element returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = oneElement.combinations(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `-1 k combinations of 2 elements throws`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
-            twoElements.combinations(-1)
+    fun `k exceeding size returns empty sequence`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..5), Arb.int(1..6)) { elements, extra ->
+            assertEquals(
+                expected = emptyList(),
+                actual = elements.combinations(elements.size + extra).toList(),
+            )
         }
-
-        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 k combinations of 2 elements returns 1 combination`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = twoElements.combinations(0).toList()
-        assertEquals(expected, actual)
-    }
+    fun `count equals binomial coefficient`() = runTest {
+        checkAll(200, Arb.int(PASCALS_TRIANGLE.indices), Arb.int(PASCALS_TRIANGLE.indices)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
 
-    @Test
-    fun `1 k combinations of 2 elements returns 2 combinations`() {
-        val expected = listOf(
-            listOf('A'),
-            listOf('B'),
-        )
-
-        val actual = twoElements.combinations(1).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `2 k combinations of 2 elements returns 1 combination`() {
-        val expected = listOf(listOf('A', 'B'))
-        val actual = twoElements.combinations(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `3 k combinations of 2 elements returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = twoElements.combinations(3).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `-1 k combinations of 3 elements throws`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
-            threeElements.combinations(-1)
+            assertBinomial(n, k, actual = elements.combinations(k).count())
         }
-
-        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 k combinations of 3 elements returns 1 combination`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = threeElements.combinations(0).toList()
-        assertEquals(expected, actual)
-    }
+    fun `every combination has exactly k elements`() = runTest {
+        checkAll(200, Arb.int(0..6), Arb.int(0..6)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
 
-    @Test
-    fun `1 k combinations of 3 elements returns 3 combinations`() {
-        val expected = listOf(
-            listOf('A'),
-            listOf('B'),
-            listOf('C'),
-        )
-
-        val actual = threeElements.combinations(1).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `2 k combinations of 3 elements returns 3 combinations`() {
-        val expected = listOf(
-            listOf('A', 'B'),
-            listOf('A', 'C'),
-            listOf('B', 'C'),
-        )
-
-        val actual = threeElements.combinations(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `3 k combinations of 3 elements returns 1 combination`() {
-        val expected = listOf(listOf('A', 'B', 'C'))
-        val actual = threeElements.combinations(3).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `4 k combinations of 3 elements returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = threeElements.combinations(4).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `-1 k combinations of 4 elements throws`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
-            fourElements.combinations(-1)
+            elements.combinations(k).forEach { combination ->
+                assertEquals(
+                    expected = k,
+                    actual = combination.size,
+                )
+            }
         }
-
-        assertEquals("k must be non-negative, but was -1", exception.message)
     }
 
     @Test
-    fun `0 k combinations of 4 elements returns 1 combination`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = fourElements.combinations(0).toList()
-        assertEquals(expected, actual)
+    fun `every element comes from the source list`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 1..6), Arb.int(1..6)) { elements, rawK ->
+            val k = rawK.coerceAtMost(elements.size)
+
+            elements.combinations(k).forEach { combination ->
+                combination.assertAllIn(elements)
+            }
+        }
     }
 
     @Test
-    fun `1 k combinations of 4 elements returns 4 combinations`() {
-        val expected = listOf(
-            listOf('A'),
-            listOf('B'),
-            listOf('C'),
-            listOf('D'),
-        )
+    fun `no duplicate combinations when elements are distinct`() = runTest {
+        checkAll(200, Arb.int(0..6), Arb.int(0..6)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
+            val results = elements.combinations(k).toList()
 
-        val actual = fourElements.combinations(1).toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = results.size,
+                actual = results.distinct().size,
+            )
+        }
     }
 
     @Test
-    fun `2 k combinations of 4 elements returns 6 combinations`() {
-        val expected = listOf(
-            listOf('A', 'B'),
-            listOf('A', 'C'),
-            listOf('A', 'D'),
-            listOf('B', 'C'),
-            listOf('B', 'D'),
-            listOf('C', 'D'),
-        )
+    fun `elements appear in ascending source order`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 1..6), Arb.int(1..6)) { elements, rawK ->
+            val k = rawK.coerceAtMost(elements.size)
 
-        val actual = fourElements.combinations(2).toList()
-        assertEquals(expected, actual)
+            elements.combinations(k).forEach { combination ->
+                combination.assertOrderedSubsequenceOf(elements)
+            }
+        }
+    }
+
+
+    @Test
+    fun `combinations are in lexicographic order`() = runTest {
+        checkAll(200, Arb.int(0..6), Arb.int(0..6)) { n, rawK ->
+            val elements = (0..<n).toList()
+            val k = rawK.coerceAtMost(n)
+            val results = elements.combinations(k).toList()
+
+            results.assertLexicographicallyOrdered()
+        }
     }
 
     @Test
-    fun `3 k combinations of 4 elements returns 4 combinations`() {
-        val expected = listOf(
-            listOf('A', 'B', 'C'),
-            listOf('A', 'B', 'D'),
-            listOf('A', 'C', 'D'),
-            listOf('B', 'C', 'D'),
-        )
+    fun `pairCombinations equals combinations of 2 as pairs`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 2..6)) { elements ->
+            val expected = elements.combinations(2).map { (a, b) -> Pair(a, b) }.toList()
 
-        val actual = fourElements.combinations(3).toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = expected,
+                actual = elements.pairCombinations().toList(),
+            )
+        }
     }
 
     @Test
-    fun `4 k combinations of 4 elements returns 1 combinations`() {
-        val expected = listOf(listOf('A', 'B', 'C', 'D'))
-        val actual = fourElements.combinations(4).toList()
-        assertEquals(expected, actual)
-    }
+    fun `tripleCombinations equals combinations of 3 as triples`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 3..6)) { elements ->
+            val expected = elements.combinations(3).map { (a, b, c) -> Triple(a, b, c) }.toList()
 
-    @Test
-    fun `5 k combinations of 4 elements returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
-        val actual = fourElements.combinations(5).toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = expected,
+                actual = elements.tripleCombinations().toList(),
+            )
+        }
     }
 }

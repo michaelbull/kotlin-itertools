@@ -1,121 +1,110 @@
 package com.github.michaelbull.itertools
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.list
+import io.kotest.property.checkAll
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class InterleaveTest {
 
     @Test
-    fun `interleave two equal length lists`() {
-        val expected = listOf(1, 2, 3, 4, 5, 6)
-        val actual = listOf(1, 3, 5).interleave(listOf(2, 4, 6))
-        assertEquals(expected, actual)
+    fun `interleave length equals twice the minimum size`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            assertEquals(
+                expected = 2 * minOf(a.size, b.size),
+                actual = a.interleave(b).size,
+            )
+        }
     }
 
     @Test
-    fun `interleave with second shorter stops at second`() {
-        val expected = listOf(1, 2, 3, 4)
-        val actual = listOf(1, 3, 5).interleave(listOf(2, 4))
-        assertEquals(expected, actual)
+    fun `interleave preserves first list elements at even indices`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            val result = a.interleave(b)
+            val m = minOf(a.size, b.size)
+
+            assertEquals(
+                expected = a.take(m),
+                actual = result.filterIndexed { i, _ -> i % 2 == 0 },
+            )
+        }
     }
 
     @Test
-    fun `interleave with first shorter stops at first`() {
-        val expected = listOf(1, 2)
-        val actual = listOf(1).interleave(listOf(2, 4, 6))
-        assertEquals(expected, actual)
+    fun `interleave preserves second list elements at odd indices`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            val result = a.interleave(b)
+            val m = minOf(a.size, b.size)
+
+            assertEquals(
+                expected = b.take(m),
+                actual = result.filterIndexed { i, _ -> i % 2 == 1 },
+            )
+        }
     }
 
     @Test
-    fun `interleave with empty first returns empty`() {
-        val expected = emptyList<Int>()
-        val actual = emptyList<Int>().interleave(listOf(1, 2))
-        assertEquals(expected, actual)
+    fun `interleave sequence variant matches iterable variant`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            assertEquals(
+                expected = a.interleave(b),
+                actual = a.asSequence().interleave(b.asSequence()).toList(),
+            )
+        }
     }
 
     @Test
-    fun `interleave with empty second returns empty`() {
-        val expected = emptyList<Int>()
-        val actual = listOf(1, 2).interleave(emptyList())
-        assertEquals(expected, actual)
+    fun `interleaveTo appends interleaved elements to destination`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..3), Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { dest, a, b ->
+            assertEquals(
+                expected = dest + a.interleave(b),
+                actual = a.interleaveTo(dest.toMutableList(), b),
+            )
+        }
     }
 
     @Test
-    fun `interleave both empty returns empty`() {
-        val expected = emptyList<Int>()
-        val actual = emptyList<Int>().interleave(emptyList())
-        assertEquals(expected, actual)
+    fun `interleaveLongest length equals sum of sizes`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            assertEquals(
+                expected = a.size + b.size,
+                actual = a.interleaveLongest(b).size,
+            )
+        }
     }
 
     @Test
-    fun `interleave sequences stops at shorter`() {
-        val expected = listOf(1, 2, 3, 4)
-        val actual = sequenceOf(1, 3, 5).interleave(sequenceOf(2, 4)).toList()
-        assertEquals(expected, actual)
+    fun `interleaveLongest contains all elements from both lists`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            val result = a.interleaveLongest(b)
+
+            assertEquals(
+                expected = (a + b).sorted(),
+                actual = result.sorted(),
+            )
+        }
     }
 
     @Test
-    fun `interleaveLongest two equal length lists`() {
-        val expected = listOf(1, 2, 3, 4, 5, 6)
-        val actual = listOf(1, 3, 5).interleaveLongest(listOf(2, 4, 6))
-        assertEquals(expected, actual)
+    fun `interleaveLongest sequence variant matches iterable variant`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { a, b ->
+            assertEquals(
+                expected = a.interleaveLongest(b),
+                actual = a.asSequence().interleaveLongest(b.asSequence()).toList(),
+            )
+        }
     }
 
     @Test
-    fun `interleaveLongest continues past shorter first`() {
-        val expected = listOf(1, 2, 4, 6)
-        val actual = listOf(1).interleaveLongest(listOf(2, 4, 6))
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveLongest continues past shorter second`() {
-        val expected = listOf(1, 2, 3, 4, 5)
-        val actual = listOf(1, 3, 5).interleaveLongest(listOf(2, 4))
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveLongest with empty first returns second`() {
-        val expected = listOf(1, 2)
-        val actual = emptyList<Int>().interleaveLongest(listOf(1, 2))
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveLongest with empty second returns first`() {
-        val expected = listOf(1, 2)
-        val actual = listOf(1, 2).interleaveLongest(emptyList())
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveLongest both empty returns empty`() {
-        val expected = emptyList<Int>()
-        val actual = emptyList<Int>().interleaveLongest(emptyList())
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveLongest sequences continues past shorter`() {
-        val expected = listOf(1, 2, 3, 4, 5)
-        val actual = sequenceOf(1, 3, 5).interleaveLongest(sequenceOf(2, 4)).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveTo appends to existing collection`() {
-        val destination = mutableListOf(0)
-        val expected = listOf(0, 1, 2, 3, 4)
-        val actual = listOf(1, 3).interleaveTo(destination, listOf(2, 4))
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `interleaveLongestTo appends to existing collection`() {
-        val destination = mutableListOf(0)
-        val expected = listOf(0, 1, 2, 3, 4, 5)
-        val actual = listOf(1, 3, 5).interleaveLongestTo(destination, listOf(2, 4))
-        assertEquals(expected, actual)
+    fun `interleaveLongestTo appends elements to destination`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..3), Arb.list(Arb.int(), 0..6), Arb.list(Arb.int(), 0..6)) { dest, a, b ->
+            assertEquals(
+                expected = dest + a.interleaveLongest(b),
+                actual = a.interleaveLongestTo(dest.toMutableList(), b),
+            )
+        }
     }
 }

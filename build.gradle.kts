@@ -72,6 +72,8 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(libs.kotest.property)
+                implementation(libs.coroutines.test)
             }
         }
 

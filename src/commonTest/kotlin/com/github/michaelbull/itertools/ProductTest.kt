@@ -1,102 +1,123 @@
 package com.github.michaelbull.itertools
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.list
+import io.kotest.property.checkAll
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ProductTest {
 
-    private val twoElements = "AB".toList()
-    private val threeElements = "ABC".toList()
-
     @Test
-    fun `product of empty list returns 1 empty product`() {
-        val expected = listOf(emptyList<Int>())
-        val actual = emptyList<List<Int>>().product().toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `product of 1 list with 3 elements returns 3 products`() {
-        val expected = listOf(
-            listOf('A'),
-            listOf('B'),
-            listOf('C'),
+    fun `empty outer list returns one empty product`() = runTest {
+        assertEquals(
+            expected = listOf(emptyList()),
+            actual = emptyList<List<Int>>().product().toList(),
         )
-
-        val actual = listOf(
-            threeElements
-        ).product().toList()
-
-        assertEquals(expected, actual)
     }
 
     @Test
-    fun `product of 2 lists with empty returns empty sequence`() {
-        val expected = emptyList<List<Char>>()
+    fun `any inner empty list returns empty sequence`() = runTest {
+        checkAll(200, Arb.list(Arb.list(Arb.int(), 1..3), 0..3), Arb.int(0..3)) { nonEmpty, insertAt ->
+            val lists = nonEmpty.toMutableList()
+            val index = insertAt.coerceIn(0, lists.size)
+            lists.add(index, emptyList())
 
-        val actual = listOf(
-            twoElements,
-            emptyList(),
-        ).product().toList()
-
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = emptyList(),
+                actual = lists.product().toList(),
+            )
+        }
     }
 
     @Test
-    fun `product of 2 lists each with 2 elements returns 4 products`() {
-        val expected = listOf(
-            listOf('A', 'A'),
-            listOf('A', 'B'),
-            listOf('B', 'A'),
-            listOf('B', 'B'),
-        )
+    fun `count equals product of inner list sizes`() = runTest {
+        checkAll(200, Arb.list(Arb.list(Arb.int(), 1..4), 1..4)) { lists ->
+            val expected = lists.fold(1L) { acc, list -> acc * list.size }
 
-        val actual = listOf(
-            twoElements,
-            twoElements,
-        ).product().toList()
-
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = expected,
+                actual = lists.product().count().toLong(),
+            )
+        }
     }
 
     @Test
-    fun `product of 3 lists each with 2 elements returns 8 products`() {
-        val expected = listOf(
-            listOf('A', 'A', 'A'),
-            listOf('A', 'A', 'B'),
-            listOf('A', 'B', 'A'),
-            listOf('A', 'B', 'B'),
-            listOf('B', 'A', 'A'),
-            listOf('B', 'A', 'B'),
-            listOf('B', 'B', 'A'),
-            listOf('B', 'B', 'B'),
-        )
-
-        val actual = listOf(
-            twoElements,
-            twoElements,
-            twoElements,
-        ).product().toList()
-
-        assertEquals(expected, actual)
+    fun `each tuple has length equal to number of inner lists`() = runTest {
+        checkAll(200, Arb.list(Arb.list(Arb.int(), 1..4), 1..4)) { lists ->
+            lists.product().forEach { tuple ->
+                assertEquals(
+                    expected = lists.size,
+                    actual = tuple.size,
+                )
+            }
+        }
     }
 
     @Test
-    fun `product of 2 lists with 2 and 3 elements respectively returns 6 products`() {
-        val expected = listOf(
-            listOf('A', 'A'),
-            listOf('A', 'B'),
-            listOf('A', 'C'),
-            listOf('B', 'A'),
-            listOf('B', 'B'),
-            listOf('B', 'C'),
-        )
+    fun `element at position i comes from list i`() = runTest {
+        checkAll(200, Arb.list(Arb.list(Arb.int(), 1..4), 1..4)) { lists ->
+            lists.product().forEach { tuple ->
+                tuple.forEachIndexed { i, element ->
+                    assertTrue(
+                        actual = element in lists[i],
+                        message = "expected element $element at position $i to be in ${lists[i]}",
+                    )
+                }
+            }
+        }
+    }
 
-        val actual = listOf(
-            twoElements,
-            threeElements,
-        ).product().toList()
+    @Test
+    fun `products are in lexicographic order`() = runTest {
+        checkAll(200, Arb.int(1..3), Arb.int(1..3)) { numLists, listSize ->
+            val lists = List(numLists) { (0..<listSize).toList() }
+            val results = lists.product().toList()
 
-        assertEquals(expected, actual)
+            results.assertLexicographicallyOrdered()
+        }
+    }
+
+    @Test
+    fun `pair product count equals product of sizes`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..5), Arb.list(Arb.int(), 0..5)) { a, b ->
+            assertEquals(
+                expected = a.size.toLong() * b.size,
+                actual = a.product(b).count().toLong(),
+            )
+        }
+    }
+
+    @Test
+    fun `pair product from Pair equals infix product`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..5), Arb.list(Arb.int(), 0..5)) { a, b ->
+            assertEquals(
+                expected = a.product(b).toList(),
+                actual = Pair(a, b).product().toList(),
+            )
+        }
+    }
+
+    @Test
+    fun `triple product count equals product of three sizes`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..4), Arb.list(Arb.int(), 0..4), Arb.list(Arb.int(), 0..4)) { a, b, c ->
+            assertEquals(
+                expected = a.size.toLong() * b.size * c.size,
+                actual = a.product(b, c).count().toLong(),
+            )
+        }
+    }
+
+    @Test
+    fun `triple product from Triple equals function product`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..4), Arb.list(Arb.int(), 0..4), Arb.list(Arb.int(), 0..4)) { a, b, c ->
+            assertEquals(
+                expected = a.product(b, c).toList(),
+                actual = Triple(a, b, c).product().toList(),
+            )
+        }
     }
 }

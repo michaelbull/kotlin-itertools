@@ -1,91 +1,74 @@
 package com.github.michaelbull.itertools
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.list
+import io.kotest.property.checkAll
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CycleTest {
 
     @Test
-    fun `cycle of empty iterable returns empty sequence`() {
-        val expected = emptyList<Int>()
-        val actual = emptyList<Int>().cycle().toList()
-        assertEquals(expected, actual)
+    fun `cycle of empty iterable returns empty sequence`() = runTest {
+        assertEquals(
+            expected = emptyList(),
+            actual = emptyList<Int>().cycle().toList(),
+        )
     }
 
     @Test
-    fun `cycle of 1 element repeats indefinitely`() {
-        val expected = listOf('A', 'A', 'A', 'A', 'A')
-        val actual = "A".toList().cycle().take(5).toList()
-        assertEquals(expected, actual)
+    fun `cycle take n has exactly n elements`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 1..5), Arb.int(0..20)) { elements, n ->
+            assertEquals(
+                expected = n,
+                actual = elements.cycle().take(n).count(),
+            )
+        }
     }
 
     @Test
-    fun `cycle of 2 elements alternates indefinitely`() {
-        val expected = listOf('A', 'B', 'A', 'B', 'A', 'B')
-        val actual = "AB".toList().cycle().take(6).toList()
-        assertEquals(expected, actual)
+    fun `cycle element at index i equals source element at i mod size`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 1..5), Arb.int(1..20)) { elements, n ->
+            elements.cycle().take(n).forEachIndexed { i, element ->
+                assertEquals(
+                    expected = elements[i % elements.size],
+                    actual = element,
+                )
+            }
+        }
     }
 
     @Test
-    fun `cycle of 3 elements repeats in order`() {
-        val expected = listOf('A', 'B', 'C', 'A', 'B', 'C', 'A')
-        val actual = "ABC".toList().cycle().take(7).toList()
-        assertEquals(expected, actual)
+    fun `cycle with non-positive times returns empty sequence`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..5), Arb.int(Int.MIN_VALUE..0)) { elements, times ->
+            assertEquals(
+                expected = emptyList(),
+                actual = elements.cycle(times).toList(),
+            )
+        }
     }
 
     @Test
-    fun `cycle take 0 returns empty list`() {
-        val expected = emptyList<Char>()
-        val actual = "ABC".toList().cycle().take(0).toList()
-        assertEquals(expected, actual)
+    fun `cycle with times has expected size`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 1..5), Arb.int(1..5)) { elements, times ->
+            assertEquals(
+                expected = elements.size * times,
+                actual = elements.cycle(times).count(),
+            )
+        }
     }
 
     @Test
-    fun `cycle take less than one full cycle`() {
-        val expected = listOf('A', 'B')
-        val actual = "ABCD".toList().cycle().take(2).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `cycle times 0 returns empty sequence`() {
-        val expected = emptyList<Char>()
-        val actual = "ABC".toList().cycle(times = 0).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `cycle negative times returns empty sequence`() {
-        val expected = emptyList<Char>()
-        val actual = "ABC".toList().cycle(times = -1).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `cycle times 1 returns single iteration`() {
-        val expected = listOf('A', 'B', 'C')
-        val actual = "ABC".toList().cycle(times = 1).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `cycle times 3 repeats three times`() {
-        val expected = listOf('A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C')
-        val actual = "ABC".toList().cycle(times = 3).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `cycle times on empty iterable returns empty sequence`() {
-        val expected = emptyList<Int>()
-        val actual = emptyList<Int>().cycle(times = 5).toList()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `cycle times on single element repeats element`() {
-        val expected = listOf('A', 'A', 'A')
-        val actual = "A".toList().cycle(times = 3).toList()
-        assertEquals(expected, actual)
+    fun `cycle with times element at index i equals source element at i mod size`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 1..5), Arb.int(1..5)) { elements, times ->
+            elements.cycle(times).forEachIndexed { i, element ->
+                assertEquals(
+                    expected = elements[i % elements.size],
+                    actual = element,
+                )
+            }
+        }
     }
 }

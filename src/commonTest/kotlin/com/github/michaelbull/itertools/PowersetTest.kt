@@ -1,80 +1,75 @@
 package com.github.michaelbull.itertools
 
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.int
+import io.kotest.property.arbitrary.list
+import io.kotest.property.checkAll
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+
+private fun pow(base: Int, exp: Int): Int {
+    return (1..exp).fold(1) { acc, _ -> acc * base }
+}
 
 class PowersetTest {
 
     @Test
-    fun `powerset of 0 elements returns 1 subset`() {
-        val expected = listOf(emptyList<Char>())
-        val actual = emptyList<Char>().powerset().toList()
-        assertEquals(expected, actual)
+    fun `count equals 2 to the power of n`() = runTest {
+        checkAll(200, Arb.int(0..6)) { n ->
+            val elements = (0..<n).toList()
+
+            assertEquals(
+                expected = pow(2, n),
+                actual = elements.powerset().count(),
+            )
+        }
     }
 
     @Test
-    fun `powerset of 1 element returns 2 subsets`() {
-        val expected = listOf(
-            emptyList(),
-            listOf('A'),
-        )
+    fun `first element is always empty list`() = runTest {
+        checkAll(200, Arb.int(0..6)) { n ->
+            val elements = (0..<n).toList()
 
-        val actual = "A".toList().powerset().toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = emptyList(),
+                actual = elements.powerset().first(),
+            )
+        }
     }
 
     @Test
-    fun `powerset of 2 elements returns 4 subsets`() {
-        val expected = listOf(
-            emptyList(),
-            listOf('A'),
-            listOf('B'),
-            listOf('A', 'B'),
-        )
+    fun `subsets are ordered by increasing size`() = runTest {
+        checkAll(200, Arb.int(0..6)) { n ->
+            val elements = (0..<n).toList()
+            val sizes = elements.powerset().map { it.size }.toList()
 
-        val actual = "AB".toList().powerset().toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = sizes,
+                actual = sizes.sorted(),
+            )
+        }
     }
 
     @Test
-    fun `powerset of 3 elements returns 8 subsets`() {
-        val expected = listOf(
-            emptyList(),
-            listOf('A'),
-            listOf('B'),
-            listOf('C'),
-            listOf('A', 'B'),
-            listOf('A', 'C'),
-            listOf('B', 'C'),
-            listOf('A', 'B', 'C'),
-        )
+    fun `equals union of all k-combinations`() = runTest {
+        checkAll(200, Arb.int(0..6)) { n ->
+            val elements = (0..<n).toList()
+            val expected = (0..n).flatMap { k -> elements.combinations(k).toList() }
 
-        val actual = "ABC".toList().powerset().toList()
-        assertEquals(expected, actual)
+            assertEquals(
+                expected = expected,
+                actual = elements.powerset().toList(),
+            )
+        }
     }
 
     @Test
-    fun `powerset of 4 elements returns 16 subsets`() {
-        val expected = listOf(
-            emptyList(),
-            listOf('A'),
-            listOf('B'),
-            listOf('C'),
-            listOf('D'),
-            listOf('A', 'B'),
-            listOf('A', 'C'),
-            listOf('A', 'D'),
-            listOf('B', 'C'),
-            listOf('B', 'D'),
-            listOf('C', 'D'),
-            listOf('A', 'B', 'C'),
-            listOf('A', 'B', 'D'),
-            listOf('A', 'C', 'D'),
-            listOf('B', 'C', 'D'),
-            listOf('A', 'B', 'C', 'D'),
-        )
-
-        val actual = "ABCD".toList().powerset().toList()
-        assertEquals(expected, actual)
+    fun `every element in every subset comes from source`() = runTest {
+        checkAll(200, Arb.list(Arb.int(), 0..6)) { elements ->
+            elements.powerset().forEach { subset ->
+                subset.assertAllIn(elements)
+            }
+        }
     }
 }
