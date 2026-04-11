@@ -52,14 +52,10 @@ kotlin {
 
     linuxX64()
     linuxArm64()
-    macosX64()
-    iosX64()
     watchosSimulatorArm64()
-    watchosX64()
     watchosArm32()
     watchosArm64()
     tvosSimulatorArm64()
-    tvosX64()
     tvosArm64()
 
     /* https://kotlinlang.org/docs/native-target-support.html#tier-3 */
@@ -70,6 +66,7 @@ kotlin {
     androidNativeX64()
     mingwX64()
     watchosDeviceArm64()
+    iosX64()
 
     sourceSets {
         commonTest {
